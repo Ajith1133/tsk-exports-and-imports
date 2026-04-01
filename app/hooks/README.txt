@@ -1,0 +1,1 @@
+This folder previously contained a custom useGetBreakpoints hook for Ant Design Grid breakpoints. It has been removed as per user request. Responsive design is now handled using CSS media queries and flexbox/grid utilities in Next.js.
