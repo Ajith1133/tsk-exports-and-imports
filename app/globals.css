@@ -1,11 +1,9 @@
-
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-  background: #fff;
-  color: #222f3e;
-  min-width: 0;
+  color: #ffffff;
+  min-height: 100vh;
 }
 /* Responsive helpers */
 .container {
@@ -99,7 +97,7 @@ nav {
 
 /* Footer */
 footer {
-  background: #7393B3;
+  background: linear-gradient(to bottom right, #111827, #1f2937, #064e3b);
   color: #fff;
   text-align: center;
   padding: 2rem 0 1rem 0;

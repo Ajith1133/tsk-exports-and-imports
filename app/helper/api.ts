@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const BASE_API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
-const BASE_API_URL = 'http://localhost:3001';
+const BASE_API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const REQUEST_TIMEOUT = 40000;
 
 export const BASE_API_CONFIG = {
