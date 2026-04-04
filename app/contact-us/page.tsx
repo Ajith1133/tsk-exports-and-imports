@@ -33,6 +33,8 @@ export default function ContactUs() {
                 port: form.port,
                 message: form.message,
             };
+            console.log("axiosInstance baseURL:", axiosInstance.defaults.baseURL); // ✅ Debug log
+            console.log("axiosInstance:", axiosInstance); // ✅ Debug log
 
             const response = await axiosInstance.post(
                 "/tsk-contact-us",
@@ -49,8 +51,10 @@ export default function ContactUs() {
                     port: "",
                     message: "",
                 });
-
                 setSuccess(true);
+                setTimeout(() => {
+                    setSuccess(false);
+                }, 5000);
             }
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -81,6 +85,22 @@ export default function ContactUs() {
                     Please fill the below details and Submit the Form, we will get in touch with you in 24 hours.
                 </p>
 
+
+                {success && (
+                    <div
+                        style={{
+                            backgroundColor: "#d4edda",
+                            color: "#155724",
+                            padding: "12px 20px",
+                            borderRadius: "8px",
+                            marginBottom: "20px",
+                            border: "1px solid #c3e6cb",
+                        }}
+                    >
+                        ✅ Form submitted successfully! We'll get back to you soon.
+                    </div>
+                )}
+
                 <div
                     style={{
                         background: "#fff",
@@ -98,7 +118,7 @@ export default function ContactUs() {
                             gap: "16px",
                         }}
                     >
-                        {/* GRID */}
+
                         <div
                             style={{
                                 display: "grid",
@@ -120,6 +140,7 @@ export default function ContactUs() {
                                     type={field.type || "text"}
                                     placeholder={field.placeholder}
                                     required={field.required}
+                                    value={form[field.name as keyof typeof form]} // ✅ Add value binding
                                     onChange={handleChange}
                                     style={{
                                         width: "100%",
@@ -148,6 +169,7 @@ export default function ContactUs() {
                             name="message"
                             placeholder="Your Message"
                             rows={6}
+                            value={form.message} // ✅ Add value binding
                             onChange={handleChange}
                             style={{
                                 width: "100%",
@@ -161,30 +183,35 @@ export default function ContactUs() {
                             }}
                         />
 
-                        {/* BUTTON */}
-                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
                             <button
                                 type="submit"
+                                disabled={loading}
                                 style={{
-                                    background: "#7393B3",
+                                    background: loading ? "#b8c5d1" : "#7393B3",
                                     color: "#fff",
                                     padding: "12px 28px",
                                     fontSize: "15px",
                                     border: "none",
                                     borderRadius: "8px",
-                                    cursor: "pointer",
+                                    cursor: loading ? "not-allowed" : "pointer",
                                     transition: "0.2s",
                                 }}
-                                onMouseOver={(e) => (e.currentTarget.style.background = "#5f7fa3")}
-                                onMouseOut={(e) => (e.currentTarget.style.background = "#7393B3")}
+                                onMouseOver={(e) => {
+                                    if (!loading) e.currentTarget.style.background = "#5f7fa3";
+                                }}
+                                onMouseOut={(e) => {
+                                    if (!loading) e.currentTarget.style.background = "#7393B3";
+                                }}
                             >
-                                Submit
+                                {loading ? "Submitting..." : "Submit"}
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
+
+
             <div style={{ marginTop: "3rem" }}>
 
                 <p style={{
@@ -205,7 +232,6 @@ export default function ContactUs() {
                     }}
                 >
 
-                    {/* ADDRESS CARD */}
                     <div
                         style={{
                             background: "#fff",
@@ -240,7 +266,6 @@ export default function ContactUs() {
                         </p>
                     </div>
 
-                    {/* CONTACT CARD */}
                     <div
                         style={{
                             background: "#fff",
@@ -301,3 +326,5 @@ export default function ContactUs() {
         </main>
     );
 }
+
+

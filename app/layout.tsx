@@ -39,10 +39,12 @@ export default function RootLayout({
             justifyContent: "space-between",
             padding: "1.5rem 2rem",
             height: "80px",
+            background: "linear-gradient(to bottom right, #111827, #1f2937, #064e3b)",
+
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            <img
+            {/* <img
               src="/logo.png"
               alt="TSK Exports and Imports"
               style={{
@@ -50,13 +52,88 @@ export default function RootLayout({
                 width: "auto",
                 objectFit: "contain",
               }}
-            />
+            /> */}
+            <h2>
+              <span style={{ color: "#4ADE80" }}>TSK </span>
+              <span style={{ color: "#fff" }}>Exports and Imports</span>
+            </h2>
           </div>
           <NavLinks />
         </nav>
         {children}
-        <footer>
-          &copy; {new Date().getFullYear()} TSK Exports and Imports. All rights reserved.
+        <footer
+          style={{
+            backgroundColor: "#111827",
+            padding: "2rem",
+            marginTop: "4rem",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: "80rem",
+              margin: "0 auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+            }}
+          >
+            {/* Contact Details Section - Top Right */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end", // Aligns to the right
+                gap: "3rem",
+                flexWrap: "wrap",
+                marginRight: "1rem",
+              }}
+            >
+              {/* Phone */}
+              <div style={{ marginBottom: "16px", textAlign: "right" }}>
+                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
+                  PHONE
+                </div>
+                <a
+                  href="tel:+917358501234"
+                  style={{
+                    color: "#4ADE80", // Changed to green to match theme
+                    textDecoration: "none",
+                    fontWeight: 500,
+                    fontSize: "1rem",
+                  }}
+                >
+                  +91-7358501234
+                </a>
+              </div>
+
+              <div style={{ marginBottom: "16px", textAlign: "right" }}>
+                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
+                  EMAIL
+                </div>
+                <a
+                  href="mailto:enquiry@tskexportsandimports.com"
+                  style={{
+                    color: "#4ADE80", // Changed to green to match theme
+                    textDecoration: "none",
+                    fontWeight: 500,
+                    fontSize: "1rem",
+                  }}
+                >
+                  enquiry@tskexportsandimports.com
+                </a>
+              </div>
+            </div>
+
+            <div
+              style={{
+                textAlign: "center",
+                color: "#9CA3AF",
+                fontSize: "0.875rem",
+                paddingTop: "1rem",
+              }}
+            >
+              &copy; {new Date().getFullYear()} TSK Exports and Imports. All rights reserved. | <span>Terms and Conditions | </span> <span> Privacy Policy </span>
+            </div>
+          </div>
         </footer>
       </body>
     </html>
