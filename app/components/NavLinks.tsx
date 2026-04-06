@@ -10,7 +10,7 @@ export default function NavLinks() {
     textDecoration: "none",
     padding: "8px 16px",
     borderRadius: "6px",
-    color: "#fff",
+    color: "black",
     fontWeight: pathname === path ? "600" : "400",
     transition: "all 0.2s ease",
   });

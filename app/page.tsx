@@ -36,20 +36,42 @@ export default function Home() {
       <div
         style={{
           display: "flex",
-          alignItems: "center",      // Vertically centers both columns
-          justifyContent: "space-between",  // Puts space between left and right content
-          minHeight: "60vh",        // Takes full viewport height for proper centering
-          maxWidth: "1200px",        // Optional: limits overall width
-          margin: "0 auto",          // Centers the entire container
-          padding: "2rem",
-          gap: "3rem",               // Space between text and image
+          alignItems: "stretch",
+          justifyContent: "space-between",
+          minHeight: "500px",
+          gap: "2rem",
+          width: "100%",
+          paddingRight: "0",
         }}
       >
-        {/* LEFT SIDE - TEXT CONTENT */}
+        {/* LEFT SIDE - IMAGE */}
         <div
           style={{
-            flex: "1",               // Takes available space
+            flex: "1",
+            minHeight: "400px",
+          }}
+        >
+          <img
+            src="https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069346-paddy-wallpapers-1920x476.jpg" // your static image
+            alt="rice"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
+
+        {/* RIGHT SIDE - TEXT */}
+        <div
+          style={{
+            flex: "1",
             textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "1rem",
+            padding: "1rem",
           }}
         >
           <h1
@@ -77,290 +99,171 @@ export default function Home() {
             Premium exporters of the finest rice varieties.
             Delivering quality and trust worldwide.
           </p>
+
+          {/* BUTTONS */}
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
               gap: "1rem",
-              justifyContent: "flex-start",
               flexWrap: "wrap",
+height: "40px",
+width: "fit-content", 
             }}
           >
-            {/* CONTACT US BUTTON */}
-            <button
-              onClick={() => router.push('/contact-us')}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                whiteSpace: "nowrap",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                transition: "all 0.2s",
-                backgroundColor: "#16A34A", // green-600
-                color: "#FFFFFF",
-                borderRadius: "0.375rem",
-                height: "2.5rem",
-                paddingLeft: "2rem",
-                paddingRight: "2rem",
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-                border: "none",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#15803D"; // green-700
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#16A34A"; // green-600
-              }}
-            >
+            <button style={{
+              backgroundColor: "#234c72",
+              color: "#fff",
+                                  fontSize: "1rem",
+                    fontWeight: "600",
+                    textDecoration: "none",
+                    borderRadius: "5px",
+                    
+            }} onClick={() => router.push('/contact-us')}>
               Contact Us
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
             </button>
 
-            {/* VIEW PRODUCTS BUTTON */}
-            <button
-              onClick={() => router.push('/products')}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                whiteSpace: "nowrap",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                transition: "all 0.2s",
-                backgroundColor: "transparent",
-                color: "#4ADE80",
-                borderRadius: "0.375rem",
-                height: "2.5rem",
-                paddingLeft: "2rem",
-                paddingRight: "2rem",
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-                border: "1px solid #4ADE80",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#4ADE80";
-                (e.target as HTMLElement).style.color = "#111827";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "transparent";
-                (e.target as HTMLElement).style.color = "#4ADE80";
-              }}
-            >
+            <button style={{
+              backgroundColor: "#234c72",
+              color: "#fff",
+                                  fontSize: "1rem",
+                    fontWeight: "600",
+                    textDecoration: "none",
+                    borderRadius: "5px",  
+
+            }} onClick={() => router.push('/products')}>
               View Products
             </button>
           </div>
         </div>
-
-        {/* RIGHT SIDE - IMAGE SLIDER */}
-        <div
-          style={{
-            flex: "1",               // Takes available space
-            position: "relative",
-            borderRadius: "10px",
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={images[current]}
-            alt="slider"
-            style={{
-              width: "100%",
-              height: "400px",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-          />
-
-          {/* LEFT ARROW */}
-          <button
-            onClick={prevSlide}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "10px",
-              transform: "translateY(-50%)",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "50%",
-              width: "40px",
-              height: "40px",
-              cursor: "pointer",
-              fontSize: "18px",
-              zIndex: 10,
-            }}
-          >
-            ‹
-          </button>
-
-          {/* RIGHT ARROW */}
-          <button
-            onClick={nextSlide}
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: "10px",
-              transform: "translateY(-50%)",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "50%",
-              width: "40px",
-              height: "40px",
-              cursor: "pointer",
-              fontSize: "18px",
-              zIndex: 10,
-            }}
-          >
-            ›
-          </button>
-        </div>
       </div>
+      {/* About us and products sections */}
       <div>
         <section
           style={{
             paddingTop: "4rem",
             paddingBottom: "4rem",
-            background: "linear-gradient(to right, #166534, #16A34A)", // from-green-800 to-green-600
-            marginTop: "2rem",
+            background: "#99BE63",
+            marginTop: "0",
           }}
         >
           <div
             style={{
-              maxWidth: "80rem",
-              margin: "0 auto",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
+              display: "flex",
+              alignItems: "stretch",
+              justifyContent: "space-between",
+              minHeight: "500px",
+              gap: "2rem",
+              width: "100%",
             }}
           >
+            {/* LEFT SIDE - TEXT */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(1, 1fr)",
-                gap: "3rem",
-                alignItems: "center",
+                flex: "1",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                gap: "1rem",
+                padding: "2rem",
               }}
             >
-              {/* Content Section */}
+              <h2
+                style={{
+                  fontSize: "2.5rem",
+                  marginBottom: "1rem",
+                  color: "#161306",
+                  letterSpacing: "1px",
+                  fontWeight: "400",
+                }}
+              >
+                About Us
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.125rem",
+                  color: "#070b12",
+                  lineHeight: "1.8",
+                  marginBottom: "1rem",
+                }}
+              >
+                "Thaswikha Exports and Imports" was established in the year 2016 in Chennai, Tamilnadu,
+                India and with primary focus of reaching the international market to meet the supply
+                and demand. We are a leading exporter of all varieties of Non-Basmati Rice with superior
+                quality of international standards. We believe in Quality of product is the primary
+                aspect of any business especially in exports and Imports. We trust on
+                <strong style={{ color: "#234c72" }}> "No Quality – No Business"</strong>.
+              </p>
+
+              <p
+                style={{
+                  fontSize: "1.125rem",
+                  color: "#070b12",
+                  lineHeight: "1.8",
+                  marginBottom: "1rem",
+                }}
+              >
+                India is the world's largest producer of Rice. It contributes 21.5 percent of global
+                rice production. Within the country, rice occupies one-quarter of the total cropped
+                area and it contributes about 40 to 43 percent of total food grain production and
+                It continues to play vital role in the national exports.
+              </p>
+
               <div>
-                <h2
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/about-us');
+                  }}
                   style={{
-                    fontSize: "1.875rem",
-                    marginBottom: "0.5rem",
-                    color: "#FDE68A",
-                    textAlign: "center",
-                    letterSpacing: "1px",
+                    display: "inline-block",
+                    backgroundColor: "#234c72",
+                    color: "#fff",
+                    padding: "12px 30px",
+                    fontSize: "1rem",
+                    fontWeight: "600",
+                    textDecoration: "none",
+                    borderRadius: "5px",
+                    transition: "all 0.3s ease",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#234c72"
+                    e.currentTarget.style.borderColor = "#201c6f"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#122e48"; // Back to original
+                    e.currentTarget.style.borderColor = "#201c6f"; // Back to original
                   }}
                 >
-                  About Us
-                </h2>
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  "Thaswikha Exports and Imports" was established in the year 2016 in Chennai, Tamilnadu,
-                  India and with primary focus of reaching the international market to meet the supply
-                  and demand. We are a leading exporter of all varieties of Non-Basmati Rice with superior
-                  quality of international standards. We believe in Quality of product is the primary
-                  aspect of any business especially in exports and Imports. We trust on
-                  <strong style={{ color: "#4ADE80" }}> "No Quality – No Business"</strong>.
-                </p>
-
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  India is the world's largest producer of Rice. It contributes 21.5 percent of global
-                  rice production. Within the country, rice occupies one-quarter of the total cropped
-                  area and it contributes about 40 to 43 percent of total food grain production and
-                  It continues to play vital role in the national exports.
-                </p>
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  Major destinations for India's non-basmati rice exports are Bangladesh, Australia,
-                  Bahrain, Ethiopia, Djibouti, France, Germany, U.K., Hong Kong, Korea, Sri-Lanka,
-                  Maldives, Mauritius, Malaysia, Nigeria, Ivory coast, Indonesia, Nepal, Oman, Qatar,
-                  Russia, South Africa, Saudi Arabia, Somalia, Singapore, U.A.E., Y.A.R., etc.
-                </p>
-
-                <div style={{ textAlign: "center" }}>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push('/about-us');
-                    }}
-                    style={{
-                      display: "inline-block",
-                      backgroundColor: "#4ADE80",
-                      color: "#1F2937",
-                      padding: "12px 30px",
-                      fontSize: "1rem",
-                      fontWeight: "600",
-                      textDecoration: "none",
-                      borderRadius: "5px",
-                      transition: "all 0.3s ease",
-                      cursor: "pointer",
-                      border: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.backgroundColor = "#FDE68A";
-                      (e.target as HTMLElement).style.color = "#1F2937";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.target as HTMLElement).style.backgroundColor = "transparent";
-                      (e.target as HTMLElement).style.color = "#4ADE80";
-                    }}
-                  >
-                    READ MORE
-                  </a>
-                </div>
+                  READ MORE
+                </a>
               </div>
+            </div>
+
+            {/* RIGHT SIDE - IMAGE */}
+            <div
+              style={{
+                flex: "1",
+                minHeight: "500px",
+              }}
+            >
+              <img
+                src="https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069320-paddy-wallpapers-1-scaled-1920x476.jpg"
+                alt="paddy fields"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
             </div>
           </div>
         </section>
 
         <section
           style={{
-            paddingTop: "4rem",
-            paddingBottom: "4rem",
-            backgroundColor: "#FDE68A", // bg-gray-800
-            marginTop: "2rem", // Optional: adds spacing from previous section
+            marginTop: "2rem",
           }}
         >
           <div
@@ -380,9 +283,10 @@ export default function Home() {
             >
               <h2
                 style={{
-                  fontSize: "1.875rem",
+                  fontSize: "3.2rem",
+                  fontWeight: "400",
                   marginBottom: "1rem",
-                  color: "#111827", // text-green-400
+                  color: "#122e48",
                 }}
               >
                 Our Products
@@ -403,20 +307,20 @@ export default function Home() {
                 }}
                 style={{
                   textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
+                  // padding: "1.5rem",
+                  backgroundColor: "#122e48",
+                  // borderRadius: "0.5rem",
+                  border: "1px solid #201c6f",
                   cursor: "pointer",
                   transition: "all 0.1s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937"
-                  e.currentTarget.style.borderColor = "#4ADE80"
+                  e.currentTarget.style.backgroundColor = "#234c72"
+                  e.currentTarget.style.borderColor = "#201c6f"
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827"; // Back to original
-                  e.currentTarget.style.borderColor = "#374151"; // Back to original
+                  e.currentTarget.style.backgroundColor = "#122e48"; // Back to original
+                  e.currentTarget.style.borderColor = "#201c6f"; // Back to original
                 }}
               >
                 <img
@@ -424,10 +328,12 @@ export default function Home() {
                   alt="IR64 Long Grain White Rice (Non Basmati)"
                   style={{
                     width: "100%",
-                    height: "200px",
+                    height: "250px",
                     objectFit: "cover",
-                    borderRadius: "0.5rem",
+                    borderBottomLeftRadius: "2rem",
+                    borderBottomRightRadius: "2rem",
                     marginBottom: "1rem",
+                    display: "block",
                   }}
                 />
                 <h3
@@ -448,20 +354,20 @@ export default function Home() {
                 }}
                 style={{
                   textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
+                  // padding: "1.5rem",
+                  backgroundColor: "#122e48",
+                  // borderRadius: "0.5rem",
+                  border: "1px solid #201c6f",
                   cursor: "pointer",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.1s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937"
-                  e.currentTarget.style.borderColor = "#4ADE80"
+                  e.currentTarget.style.backgroundColor = "#234c72"
+                  e.currentTarget.style.borderColor = "#201c6f"
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827"; // Back to original
-                  e.currentTarget.style.borderColor = "#374151"; // Back to original
+                  e.currentTarget.style.backgroundColor = "#122e48"; // Back to original
+                  e.currentTarget.style.borderColor = "#201c6f"; // Back to original
                 }}
               >
                 <img
@@ -469,10 +375,12 @@ export default function Home() {
                   alt="IR64 Long Grain Parboiled Rice"
                   style={{
                     width: "100%",
-                    height: "200px",
+                    height: "250px",
                     objectFit: "cover",
-                    borderRadius: "0.5rem",
+                    borderBottomLeftRadius: "2rem",
+                    borderBottomRightRadius: "2rem",
                     marginBottom: "1rem",
+                    display: "block",
                   }}
                 />
 
@@ -493,20 +401,20 @@ export default function Home() {
                 }}
                 style={{
                   textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
+                  // padding: "1.5rem",
+                  backgroundColor: "#122e48",
+                  // borderRadius: "0.5rem",
+                  border: "1px solid #201c6f",
                   cursor: "pointer",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.1s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937";
-                  e.currentTarget.style.borderColor = "#4ADE80";
+                  e.currentTarget.style.backgroundColor = "#234c72"
+                  e.currentTarget.style.borderColor = "#201c6f"
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827";
-                  e.currentTarget.style.borderColor = "#374151";
+                  e.currentTarget.style.backgroundColor = "#122e48"; // Back to original
+                  e.currentTarget.style.borderColor = "#201c6f"; // Back to original
                 }}
 
               >
@@ -515,10 +423,12 @@ export default function Home() {
                   alt="Swarna Parboiled Rice"
                   style={{
                     width: "100%",
-                    height: "200px",
+                    height: "250px",
                     objectFit: "cover",
-                    borderRadius: "0.5rem",
+                    borderBottomLeftRadius: "2rem",
+                    borderBottomRightRadius: "2rem",
                     marginBottom: "1rem",
+                    display: "block",
                   }}
                 />
 

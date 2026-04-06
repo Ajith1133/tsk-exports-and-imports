@@ -77,8 +77,8 @@ nav {
   gap: 2rem;
   padding: 1.5rem 2rem;
   background: #eaf1f8;
-  border-bottom: 2px solid #7393B3;
-  margin-bottom: 2rem;
+  border-bottom: 2px solid #d7bd6d;
+  margin-bottom: 0;
   box-shadow: 0 2px 8px rgba(115, 147, 179, 0.08);
 }
 
@@ -97,8 +97,8 @@ nav {
 
 /* Footer */
 footer {
-  background: linear-gradient(to bottom right, #111827, #1f2937, #064e3b);
-  color: #fff;
+  background: #F4CB4D;
+  color: #1F2937;
   text-align: center;
   padding: 2rem 0 1rem 0;
   margin-top: 3rem;

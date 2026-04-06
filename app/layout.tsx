@@ -34,36 +34,34 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <nav
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "1.5rem 2rem",
-            height: "80px",
-            background: "linear-gradient(to bottom right, #111827, #1f2937, #064e3b)",
-
-          }}
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "1.5rem 2rem",
+    height: "30px",
+    background: "#F4CB4D",
+    position: "relative",
+  }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <img
-              src="/logo.png"
-              alt="TSK Exports and Imports"
-              style={{
-                height: "200px",
-                width: "auto",
-                objectFit: "contain",
-              }}
-            /> */}
             <h2>
-              <span style={{ color: "#4ADE80" }}>TSK </span>
-              <span style={{ color: "#fff" }}>Exports and Imports</span>
+              <span style={{ color: "#111827" }}>TSK Exports and Imports</span>
             </h2>
           </div>
-          <NavLinks />
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <NavLinks />
+          </div>
         </nav>
         {children}
         <footer
           style={{
-            backgroundColor: "#111827",
+            backgroundColor: "#F4CB4D",
             padding: "2rem",
             marginTop: "4rem",
           }}
@@ -87,46 +85,40 @@ export default function RootLayout({
                 marginRight: "1rem",
               }}
             >
-              {/* Phone */}
+
               <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
-                  PHONE
-                </div>
-                <a
+                <div style={{ fontSize: "24px", color: "#1F2937", marginBottom: "4px" }}>
+                  Contact us
+                </div><br />
+                                                <a
                   href="tel:+917358501234"
                   style={{
-                    color: "#4ADE80", // Changed to green to match theme
+                    color: "#1F2937", // Changed to green to match theme
                     textDecoration: "none",
-                    fontWeight: 500,
+                    fontWeight: 400,
                     fontSize: "1rem",
                   }}
                 >
                   +91-7358501234
-                </a>
-              </div>
-
-              <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
-                  EMAIL
-                </div>
+                </a><br />
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
                   style={{
-                    color: "#4ADE80", // Changed to green to match theme
+                    color: "#1F2937", // Changed to green to match theme
                     textDecoration: "none",
-                    fontWeight: 500,
+                    fontWeight: 400,
                     fontSize: "1rem",
                   }}
                 >
                   enquiry@tskexportsandimports.com
-                </a>
+                </a><br />
               </div>
             </div>
 
             <div
               style={{
                 textAlign: "center",
-                color: "#9CA3AF",
+                color: "#1F2937",
                 fontSize: "0.875rem",
                 paddingTop: "1rem",
               }}
