@@ -95,7 +95,7 @@ export default function RootLayout({
                 <a
                   href="tel:+917358501234"
                   style={{
-                    color: "#4ADE80", // Changed to green to match theme
+                    color: "#fff",
                     textDecoration: "none",
                     fontWeight: 500,
                     fontSize: "1rem",
@@ -112,7 +112,7 @@ export default function RootLayout({
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
                   style={{
-                    color: "#4ADE80", // Changed to green to match theme
+                    color: "#fff",
                     textDecoration: "none",
                     fontWeight: 500,
                     fontSize: "1rem",
