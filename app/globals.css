@@ -77,7 +77,7 @@ nav {
   gap: 2rem;
   padding: 1.5rem 2rem;
   background: #eaf1f8;
-  border-bottom: 2px solid #d7bd6d;
+  /* border-bottom: 2px solid #d7bd6d; */
   margin-bottom: 0;
   box-shadow: 0 2px 8px rgba(115, 147, 179, 0.08);
 }

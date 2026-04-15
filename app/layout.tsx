@@ -36,32 +36,20 @@ export default function RootLayout({
           style={{
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "right",
     padding: "1.5rem 2rem",
-    height: "30px",
-    background: "#F4CB4D",
-    position: "relative",
+    height: "1rem",
+    background: "#0c77a1",
+    color: "#fff",
   }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <h2>
-              <span style={{ color: "#111827" }}>TSK Exports and Imports</span>
-            </h2>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-          >
             <NavLinks />
-          </div>
+          
         </nav>
         {children}
         <footer
           style={{
-            backgroundColor: "#F4CB4D",
+            backgroundColor: "#0c77a1",
             padding: "2rem",
             marginTop: "4rem",
           }}
@@ -87,13 +75,13 @@ export default function RootLayout({
             >
 
               <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "24px", color: "#1F2937", marginBottom: "4px" }}>
+                <div style={{ fontSize: "24px", color: "#fff", marginBottom: "4px" }}>
                   Contact us
                 </div><br />
                                                 <a
                   href="tel:+917358501234"
                   style={{
-                    color: "#1F2937", // Changed to green to match theme
+                    color: "#fff", // Changed to green to match theme
                     textDecoration: "none",
                     fontWeight: 400,
                     fontSize: "1rem",
@@ -104,7 +92,7 @@ export default function RootLayout({
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
                   style={{
-                    color: "#1F2937", // Changed to green to match theme
+                    color: "#fff", // Changed to green to match theme
                     textDecoration: "none",
                     fontWeight: 400,
                     fontSize: "1rem",
@@ -118,7 +106,7 @@ export default function RootLayout({
             <div
               style={{
                 textAlign: "center",
-                color: "#1F2937",
+                color: "#fff",
                 fontSize: "0.875rem",
                 paddingTop: "1rem",
               }}
