@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Car } from "lucide-react";
@@ -14,6 +14,64 @@ export default function Home() {
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069320-paddy-wallpapers-1-scaled-1920x476.jpg",
     "/ExportImportImg.png"
   ];
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [form, setForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+    const aboutRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (aboutRef.current) observer.observe(aboutRef.current);
+
+    return () => {
+      if (aboutRef.current) observer.unobserve(aboutRef.current);
+    };
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const submissionData = {
+        name: form.name,
+        company: form.company,
+        email: form.email,
+        phone: form.phone,
+        message: form.message,
+      };
+      await axiosInstance.post("/tsk-contact-us", submissionData);
+      setForm({ name: "", company: "", email: "", phone: "", message: "" });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (error) {
+      console.error("Form submit error:", error);
+      alert("Unable to submit form. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <> 
@@ -382,6 +440,66 @@ export default function Home() {
               <img src="/fssai.png" alt="FASSAI" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
               <img src="/msme.svg" alt="MSME" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
             </div>
+          </div>
+        </section>
+
+
+<section className="home-contact-section">
+          <div className="contact-card">
+            <h2>Quick Inquiry</h2>
+            <p>Share your details and we’ll connect with you shortly.</p>
+            {success && (
+              <div className="contact-success">
+                Your message has been sent successfully.
+              </div>
+            )}
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="contact-form-grid">
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Your Name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="company"
+                  type="text"
+                  placeholder="Company Name"
+                  value={form.company}
+                  onChange={handleChange}
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={form.phone}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                rows={5}
+                value={form.message}
+                onChange={handleChange}
+                required
+              />
+
+              <button type="submit" className="contact-submit" disabled={loading}>
+                {loading ? "Submitting..." : "Send Message"}
+              </button>
+            </form>
           </div>
         </section>
 
