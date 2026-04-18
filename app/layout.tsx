@@ -39,8 +39,7 @@ export default function RootLayout({
     justifyContent: "right",
     padding: "1.5rem 2rem",
     height: "1rem",
-    background: "#0c77a1",
-    color: "#fff",
+    background: "#F4CB4D",
   }}
         >
             <NavLinks />
@@ -49,7 +48,7 @@ export default function RootLayout({
         {children}
         <footer
           style={{
-            backgroundColor: "#0c77a1",
+            backgroundColor: "#F4CB4D",
             padding: "2rem",
             marginTop: "4rem",
           }}
@@ -75,13 +74,13 @@ export default function RootLayout({
             >
 
               <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "24px", color: "#fff", marginBottom: "4px" }}>
+                <div style={{ fontSize: "24px", color: "#171309", marginBottom: "4px" }}>
                   Contact us
                 </div><br />
                                                 <a
                   href="tel:+917358501234"
                   style={{
-                    color: "#fff", // Changed to green to match theme
+                    color: "#171309", // Changed to match theme
                     textDecoration: "none",
                     fontWeight: 400,
                     fontSize: "1rem",
@@ -92,7 +91,7 @@ export default function RootLayout({
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
                   style={{
-                    color: "#fff", // Changed to green to match theme
+                    color: "#171309", // Changed to match theme
                     textDecoration: "none",
                     fontWeight: 400,
                     fontSize: "1rem",
@@ -106,7 +105,7 @@ export default function RootLayout({
             <div
               style={{
                 textAlign: "center",
-                color: "#fff",
+                color: "#171309",
                 fontSize: "0.875rem",
                 paddingTop: "1rem",
               }}

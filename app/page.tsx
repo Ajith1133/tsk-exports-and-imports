@@ -1,8 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Car } from "lucide-react";
+import Carousel from "./components/Carousel";
 
 
 export default function Home() {
@@ -10,112 +12,14 @@ export default function Home() {
   const images = [
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069346-paddy-wallpapers-1920x476.jpg",
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069320-paddy-wallpapers-1-scaled-1920x476.jpg",
-    "https://tskexportsandimports.com/web/wp-content/uploads/2022/11/container-vessel-1920x476.jpg",
+    "/ExportImportImg.png"
   ];
 
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const prevSlide = () => {
-    setCurrent(current === 0 ? images.length - 1 : current - 1);
-  };
-
-  const nextSlide = () => {
-    setCurrent(current === images.length - 1 ? 0 : current + 1);
-  };
-  const [showText, setShowText] = useState(false);
-
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setShowText(true);
-  }, 300);
-
-  return () => clearTimeout(timer);
-}, []);
-
-
   return (
-    <>
-
-    <div
-  style={{
-    position: "relative",
-    width: "100%",
-    height: "600px",
-    overflow: "hidden",
-  }}
->
-  {/* IMAGE */}
-  <img
-    src="/ExportImportImg.png"
-    alt="rice"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block",
-    }}
-  />
-
-  {/* OVERLAY (optional dark effect) */}
-  <div
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      background: "linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2))",
-
-    }}
-  />
-
-  {/* TEXT */}
-  <div
-    style={{
-      position: "absolute",
-      top: "10%",
-      marginLeft: "1rem",
-      textAlign: "center",
-      color: "#f9fafb",
-    opacity: showText ? 1 : 0,
-    transform: showText
-      ? "translateY(0px)"
-      : "translateY(-50px)", // start above
-
-    transition: "all 0.8s ease",
-    }}
-  >
-    <h1
-      style={{
-        fontSize: "4.5rem",
-        fontWeight: "800",
-        marginBottom: "1rem",
-        whiteSpace: "nowrap"
-      }}
-    >
-      TSK Exports and Imports
-    </h1>
-
-    <p
-      style={{
-        fontSize: "1.40rem",
-        maxWidth: "600px",
-        whiteSpace: "nowrap",
-      marginLeft: "1rem",
-
-      }}
-    >
-      Premium exporters of the finest rice varieties. Delivering quality and trust worldwide.
-    </p>
-  </div>
-</div>
+    <> 
+        <div>
+          <Carousel images={images} />
+        </div>
 
       {/* About us and products sections */}
       <div>
@@ -127,27 +31,27 @@ useEffect(() => {
             background: "#CDEF7F",
           }}
         >
-           <div
-    style={{
-      position: "absolute",
-      top: "-1px",
-      left: 0,
-      width: "100%",
-      overflow: "hidden",
-      lineHeight: 0,
-    }}
-  >
-    <svg
-      viewBox="0 0 1440 175"
-      style={{ display: "block", width: "100%", height: "100px" }}
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M0,0 C480,150 960,150 1440,0 L1440,0 L0,0 Z"
-        fill="#ffffff"
-      />
-    </svg>
-  </div>
+          <div
+            style={{
+              position: "absolute",
+              top: "-1px",
+              left: 0,
+              width: "100%",
+              overflow: "hidden",
+              lineHeight: 0,
+            }}
+          >
+            <svg
+              viewBox="0 0 1440 175"
+              style={{ display: "block", width: "100%", height: "100px" }}
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,0 C480,150 960,150 1440,0 L1440,0 L0,0 Z"
+                fill="#ffffff"
+              />
+            </svg>
+          </div>
 
 
           <div
@@ -160,7 +64,7 @@ useEffect(() => {
               width: "100%",
             }}
           >
-            <div
+            {/* <div
               style={{
                 flex: "1",
                 minHeight: "500px",
@@ -178,9 +82,9 @@ useEffect(() => {
                   padding: "2rem",
                 }}
               />
-            </div>
+            </div> */}
 
-                        <div
+            <div
               style={{
                 flex: "1",
                 display: "flex",
@@ -268,146 +172,215 @@ useEffect(() => {
         </section>
 
         <section
+          style={{
+            padding: "4rem 1rem",
+            background: "#f8fafc",
+          }}
         >
           <div
             style={{
-              maxWidth: "80rem", // max-w-7xl
+              maxWidth: "80rem",
               margin: "0 auto",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
             }}
           >
-            {/* Header Section */}
+            {/* HEADER */}
             <div
               style={{
-                textAlign: "center",
+                textAlign: "left",
                 marginBottom: "3rem",
               }}
             >
               <h2
                 style={{
-                  fontSize: "4rem",
-                  fontWeight: "400",
-                  marginBottom: "1rem",
-                  marginTop: "0",
-                  paddingTop: "2rem",
+                  fontSize: "3rem",
+                  marginBottom: "0.5rem",
                   color: "#1E2D3B",
                 }}
               >
                 Our Products
               </h2>
-
             </div>
 
+            {/* GRID */}
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "10rem",
+                gap: "18px",
               }}
             >
+              {/* CARD 1 */}
               <div
                 onClick={() => {
                   window.location.href = `/products/${encodeURIComponent("IR64 Long Grain White Rice (Non Basmati)")}`;
                 }}
                 style={{
-                  textAlign: "center",
+                  background: "#fff",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+                  transition: "transform 0.3s ease",
                   cursor: "pointer",
-                  transition: "all 0.1s ease",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-5px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2024/10/ir64-white-rice-370x250.jpg"
-                  alt="IR64 Long Grain White Rice (Non Basmati)"
+                  src="/ir64_non_basmathi.png"
+                  alt="Rice"
                   style={{
                     width: "100%",
-                    height: "400px",
+                    height: "220px",
                     objectFit: "cover",
-                    marginBottom: "1rem",
-                    display: "block",
                   }}
                 />
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#1E2D3B",
-                  }}
-                >
-                  IR64 Long Grain White Rice (Non Basmati)
-
-                </h3>
+                <div style={{ padding: "16px" }}>
+                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>IR64 Long Grain White Rice (Non Basmati)</h3>
+                  <p style={{ color: "#6b7280", margin: 0 }}>
+                    Basmati & Non-Basmati — ~25 varieties to match diverse market needs.
+                  </p>
+                </div>
               </div>
+
+              {/* CARD 2 */}
               <div
                 onClick={() => {
                   window.location.href = `/products/${encodeURIComponent("IR64 Long Grain Parboiled Rice")}`;
                 }}
                 style={{
-                  textAlign: "center",
+                  background: "#fff",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+                  transition: "transform 0.3s ease",
                   cursor: "pointer",
-                  transition: "all 0.1s ease",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-5px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2018/04/IR64-parboiled-rice-370x250.jpg"
-                  alt="IR64 Long Grain Parboiled Rice"
+                  src="/ir64_parboiled_rice.png"
+                  alt="Parboiled Rice"
                   style={{
                     width: "100%",
-                    height: "400px",
+                    height: "220px",
                     objectFit: "cover",
-                    marginBottom: "1rem",
-                    display: "block",
                   }}
                 />
-
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#1E2D3B",
-
-                  }}
-                >
-                  IR64 Long Grain Parboiled Rice
-                </h3>
+                <div style={{ padding: "16px" }}>
+                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>IR64 Long Grain Parboiled Rice</h3>
+                  <p style={{ color: "#6b7280", margin: 0 }}>
+                    High-quality refined sugar sourced and shipped at competitive prices.
+                  </p>
+                </div>
               </div>
+
+              {/* CARD 3 */}
               <div
                 onClick={() => {
                   window.location.href = `/products/${encodeURIComponent("Swarna Parboiled Rice")}`;
                 }}
                 style={{
-                  textAlign: "center",
+                  background: "#fff",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+                  transition: "transform 0.3s ease",
                   cursor: "pointer",
-                  transition: "all 0.1s ease",
                 }}
-
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-5px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2015/09/swarna-boiled-rice-500x500-1-370x250.jpeg"
-                  alt="Swarna Parboiled Rice"
+                  src="/swarna_rice.png"
+                  alt="Flour"
                   style={{
                     width: "100%",
-                    height: "400px",
+                    height: "220px",
                     objectFit: "cover",
-                    marginBottom: "1rem",
-                    display: "block",
                   }}
                 />
-
-
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#1E2D3B",
-                  }}
-                >
-                  Swarna Parboiled Rice
-                </h3>
+                <div style={{ padding: "16px" }}>
+                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>Swarna Parboiled Rice</h3>
+                  <p style={{ color: "#6b7280", margin: 0 }}>
+                    Consistent texture and quality for retail and HORECA clients.
+                  </p>
+                </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section
+          style={{
+            padding: "4rem 1rem",
+            background: "#f8fafc",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: "80rem",
+              margin: "0 auto",
+            }}
+          >
+            {/* HEADER */}
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: "2rem",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "3rem",
+                  marginBottom: "0.5rem",
+                  color: "#1E2D3B",
+                }}
+              >
+                Certifications & Memberships
+              </h2>
+
+              <span
+                style={{
+                  color: "#6b7280",
+                  fontSize: "1rem",
+                }}
+              >
+                ISO (3), APEDA, FASSAI, MSME
+              </span>
+            </div>
+
+            {/* LOGO GRID */}
+            <div
+              style={{
+                background: "#fff",
+                padding: "50px",
+                borderRadius: "10px",
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gap: "32px",
+                alignItems: "center",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+              }}
+            >
+              <img src="/iso.svg" alt="ISO" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/apeda.svg" alt="APEDA" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/fssai.png" alt="FASSAI" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/msme.svg" alt="MSME" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
             </div>
           </div>
         </section>
