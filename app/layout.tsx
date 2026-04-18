@@ -50,7 +50,6 @@ export default function RootLayout({
           style={{
             backgroundColor: "#F4CB4D",
             padding: "2rem",
-            marginTop: "4rem",
           }}
         >
           <div

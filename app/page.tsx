@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Car } from "lucide-react";
 import Carousel from "./components/Carousel";
+import { axiosInstance } from "./helper/api";
 
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
     message: "",
   });
 
-    const aboutRef = useRef<HTMLDivElement | null>(null);
+  const aboutRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -73,11 +74,23 @@ export default function Home() {
     }
   };
 
+
+  const inputStyle = {
+    width: "100%",
+    padding: "14px 16px",
+    border: "1px solid #d7e2df",
+    fontSize: "1rem",
+    color: "#1f3c3b",
+    background: "#f8faf8",
+    outline: "none",
+    boxSizing: "border-box",
+  };
+
   return (
-    <> 
-        <div>
-          <Carousel images={images} />
-        </div>
+    <>
+
+      <Carousel images={images} />
+
 
       {/* About us and products sections */}
       <div>
@@ -201,24 +214,23 @@ export default function Home() {
                   }}
                   style={{
                     display: "inline-block",
-                    backgroundColor: "#0c77a1",
-                    color: "#fff",
+                    backgroundColor: "#F4CB4D",
+                    color: "#1f3c3b",
                     padding: "12px 30px",
                     fontSize: "1rem",
-                    fontWeight: "600",
+                    fontWeight: "700",
                     textDecoration: "none",
-                    borderRadius: "5px",
                     transition: "all 0.3s ease",
                     cursor: "pointer",
                     border: "none",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#234c72"
-                    e.currentTarget.style.borderColor = "#201c6f"
+                    e.currentTarget.style.backgroundColor = "#f6c423"
+                    e.currentTarget.style.borderColor = "#F4CB4D"
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "#0c77a1"; // Back to original
-                    e.currentTarget.style.borderColor = "#073c51"; // Back to original
+                    e.currentTarget.style.backgroundColor = "#F4CB4D"; // Back to original
+                    e.currentTarget.style.borderColor = "#7c6b3a"; // Back to original
                   }}
                 >
                   READ MORE
@@ -418,7 +430,7 @@ export default function Home() {
                   fontSize: "1rem",
                 }}
               >
-                ISO (3), APEDA, FASSAI, MSME
+                FASSAI, ISO (3), MSME, APEDA
               </span>
             </div>
 
@@ -435,26 +447,83 @@ export default function Home() {
                 boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
               }}
             >
-              <img src="/iso.svg" alt="ISO" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
-              <img src="/apeda.svg" alt="APEDA" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
               <img src="/fssai.png" alt="FASSAI" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
-              <img src="/msme.svg" alt="MSME" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/iso.svg" alt="ISO" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/msme.svg" alt="MSME" style={{ width: "100%", height: "200px", objectFit: "contain" }} />
+              <img src="/apeda.svg" alt="APEDA" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
             </div>
           </div>
         </section>
 
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "2rem",
+            alignItems: "start",
+          }}
+        >
+          <div
+            style={{
+              background: "radial-gradient(1200px 600px at 75% -10%, rgba(101,163,13,.10), transparent), radial-gradient(900px 500px at -10% 10%, rgba(22,163,74,.12), transparent)",
+              border: "1px solid rgba(96, 125, 130, 0.18)",
+              padding: "2rem",
+              boxShadow: "0 18px 30px rgba(96, 125, 130, 0.08)",
+            }}
+          >
+            <h2
+              style={{
+                margin: "0 0 0.85rem",
+                color: "#1f3c3b",
+                fontSize: "2rem",
+              }}
+            >
+              Quick Inquiry
+            </h2>
 
-<section className="home-contact-section">
-          <div className="contact-card">
-            <h2>Quick Inquiry</h2>
-            <p>Share your details and we’ll connect with you shortly.</p>
+            <p
+              style={{
+                margin: "0 0 1.8rem",
+                color: "#52615d",
+                lineHeight: "1.75",
+              }}
+            >
+              Share your details and we’ll connect with you shortly.
+            </p>
+
             {success && (
-              <div className="contact-success">
+              <div
+                style={{
+                  marginBottom: "1.5rem",
+                  padding: "1rem 1.25rem",
+                  background: "#d9f7ef",
+                  color: "#17594d",
+                  border: "1px solid #ade1ca",
+                  borderRadius: "14px",
+                }}
+              >
                 Your message has been sent successfully.
               </div>
             )}
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="contact-form-grid">
+
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                width: "100%",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+                  gap: "2rem",
+                  alignItems: "start",
+                  overflowX: "hidden",   // ✅ prevent spill
+                }}
+              >
                 <input
                   name="name"
                   type="text"
@@ -462,14 +531,18 @@ export default function Home() {
                   value={form.name}
                   onChange={handleChange}
                   required
+                  style={inputStyle}
                 />
+
                 <input
                   name="company"
                   type="text"
                   placeholder="Company Name"
                   value={form.company}
                   onChange={handleChange}
+                  style={inputStyle}
                 />
+
                 <input
                   name="email"
                   type="email"
@@ -477,13 +550,16 @@ export default function Home() {
                   value={form.email}
                   onChange={handleChange}
                   required
+                  style={inputStyle}
                 />
+
                 <input
                   name="phone"
                   type="tel"
                   placeholder="Phone Number"
                   value={form.phone}
                   onChange={handleChange}
+                  style={inputStyle}
                 />
               </div>
 
@@ -494,9 +570,28 @@ export default function Home() {
                 value={form.message}
                 onChange={handleChange}
                 required
+                style={{
+                  ...inputStyle,
+                  resize: "vertical",
+                  minHeight: "140px",
+                }}
               />
 
-              <button type="submit" className="contact-submit" disabled={loading}>
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: "fit-content",
+                  padding: "0.95rem 2rem",
+                  border: "none",
+                  fontWeight: "700",
+                  fontSize: "1rem",
+                  background: loading ? "#7c6b3a" : "#F4CB4D",
+                  color: "#1f3c3b",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  transition: "all 0.2s ease",
+                }}
+              >
                 {loading ? "Submitting..." : "Send Message"}
               </button>
             </form>

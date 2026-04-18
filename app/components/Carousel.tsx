@@ -40,6 +40,8 @@ const Carousel = ({ images }: CarouselProps) => {
                 width: "100%",
                 height: "600px",
                 objectFit: "cover",
+                    display: "block"   // ✅ IMPORTANT FIX
+
               }}
             />
           </SwiperSlide>
