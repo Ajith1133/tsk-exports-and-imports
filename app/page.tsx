@@ -1,11 +1,12 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Car } from "lucide-react";
 import Carousel from "./components/Carousel";
 import { axiosInstance } from "./helper/api";
+import Products from "./products/page";
 
 
 export default function Home() {
@@ -75,7 +76,7 @@ export default function Home() {
   };
 
 
-  const inputStyle = {
+  const inputStyle: CSSProperties = {
     width: "100%",
     padding: "14px 16px",
     border: "1px solid #d7e2df",
@@ -240,161 +241,7 @@ export default function Home() {
 
           </div>
         </section>
-
-        <section
-          style={{
-            padding: "4rem 1rem",
-            background: "#f8fafc",
-          }}
-        >
-          <div
-            style={{
-              maxWidth: "80rem",
-              margin: "0 auto",
-            }}
-          >
-            {/* HEADER */}
-            <div
-              style={{
-                textAlign: "left",
-                marginBottom: "3rem",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "3rem",
-                  marginBottom: "0.5rem",
-                  color: "#1E2D3B",
-                }}
-              >
-                Our Products
-              </h2>
-            </div>
-
-            {/* GRID */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "18px",
-              }}
-            >
-              {/* CARD 1 */}
-              <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("IR64 Long Grain White Rice (Non Basmati)")}`;
-                }}
-                style={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-                  transition: "transform 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "translateY(-5px)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "translateY(0)")
-                }
-              >
-                <img
-                  src="/ir64_non_basmathi.png"
-                  alt="Rice"
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>IR64 Long Grain White Rice (Non Basmati)</h3>
-                  <p style={{ color: "#6b7280", margin: 0 }}>
-                    Basmati & Non-Basmati — ~25 varieties to match diverse market needs.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 2 */}
-              <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("IR64 Long Grain Parboiled Rice")}`;
-                }}
-                style={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-                  transition: "transform 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "translateY(-5px)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "translateY(0)")
-                }
-              >
-                <img
-                  src="/ir64_parboiled_rice.png"
-                  alt="Parboiled Rice"
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>IR64 Long Grain Parboiled Rice</h3>
-                  <p style={{ color: "#6b7280", margin: 0 }}>
-                    High-quality refined sugar sourced and shipped at competitive prices.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD 3 */}
-              <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("Swarna Parboiled Rice")}`;
-                }}
-                style={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-                  transition: "transform 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "translateY(-5px)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "translateY(0)")
-                }
-              >
-                <img
-                  src="/swarna_rice.png"
-                  alt="Flour"
-                  style={{
-                    width: "100%",
-                    height: "220px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>Swarna Parboiled Rice</h3>
-                  <p style={{ color: "#6b7280", margin: 0 }}>
-                    Consistent texture and quality for retail and HORECA clients.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-
+        <Products />
         <section
           style={{
             padding: "4rem 1rem",
@@ -521,7 +368,7 @@ export default function Home() {
                   gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
                   gap: "2rem",
                   alignItems: "start",
-                  overflowX: "hidden",   // ✅ prevent spill
+                  overflowX: "hidden",
                 }}
               >
                 <input

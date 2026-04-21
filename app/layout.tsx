@@ -34,16 +34,19 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <nav
           style={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "right",
-    padding: "1.5rem 2rem",
-    height: "1rem",
-    background: "#F4CB4D",
-  }}
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "right",
+            padding: "1.5rem 2rem",
+            height: "1rem",
+            background: "#F4CB4D",
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+          }}
         >
-            <NavLinks />
-          
+          <NavLinks />
+
         </nav>
         {children}
         <footer
@@ -65,39 +68,43 @@ export default function RootLayout({
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-end", // Aligns to the right
+                justifyContent: "space-between", // Aligns to the right
                 gap: "3rem",
                 flexWrap: "wrap",
                 marginRight: "1rem",
               }}
             >
+              {/* LEFT SIDE - ADDRESS */}
+              <div style={{ maxWidth: "400px", textAlign: "left" }}>
+                <div style={{ fontSize: "20px", color: "#171309", marginBottom: "8px" }}>
+                  Registered Address
+                </div>
 
-              <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "24px", color: "#171309", marginBottom: "4px" }}>
-                  Contact us
-                </div><br />
-                                                <a
+                THASWIKHA EXPORTS AND IMPORTS <br />
+                Ground Floor, Plot No.221, Door No.8/8 <br />
+                Sreevari Enclave, Elango Street <br />
+                Alwarthirunagar, Chennai – 600087
+              </div>
+
+              {/* RIGHT SIDE - CONTACT */}
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: "20px", color: "#171309", marginBottom: "8px" }}>
+                  Contact Us
+                </div>
+
+                <a
                   href="tel:+917358501234"
-                  style={{
-                    color: "#171309", // Changed to match theme
-                    textDecoration: "none",
-                    fontWeight: 400,
-                    fontSize: "1rem",
-                  }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
                 >
                   +91-7358501234
-                </a><br />
+                </a>
+
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
-                  style={{
-                    color: "#171309", // Changed to match theme
-                    textDecoration: "none",
-                    fontWeight: 400,
-                    fontSize: "1rem",
-                  }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
                 >
                   enquiry@tskexportsandimports.com
-                </a><br />
+                </a>
               </div>
             </div>
 

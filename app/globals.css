@@ -8,11 +8,13 @@ body {
   font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
   color: #ffffff;
   min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 75% -10%, rgba(101,163,13,.10), transparent),
+    radial-gradient(900px 500px at -10% 10%, rgba(22,163,74,.12), transparent);
 }
 /* Responsive helpers */
 .container {
   width: 100%;
-  max-width: 900px;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -64,8 +66,8 @@ a, .nav-link {
 
 a:hover, .nav-link:hover {
   text-decoration: underline;
-  color: #7393B3;
-  border-bottom: 2px solid #7393B3;
+  color: #1E2D3B;
+  border-bottom: 2px solid #1E2D3B;
 }
 
 .nav-link.active {
@@ -92,11 +94,13 @@ nav {
   object-fit: contain;
 }
 
-/* Container */
 .container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;              /* keep layout centered */
   margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #1f3c3b;
 }
 
 /* Footer */
