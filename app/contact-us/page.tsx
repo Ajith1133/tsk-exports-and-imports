@@ -22,6 +22,8 @@ export default function ContactUs() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+                    console.log("axiosInstance baseURL:", axiosInstance.defaults.baseURL); // ✅ Debug log
+            console.log("axiosInstance:", axiosInstance); // ✅ Debug log
         try {
             setLoading(true);
             const submissionData = {

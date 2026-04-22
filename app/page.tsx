@@ -164,6 +164,7 @@ export default function Home() {
                 justifyContent: "center",
                 gap: ".5rem",
                 padding: "2rem",
+                alignItems: "center",
               }}
             >
               <h2

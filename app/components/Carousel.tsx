@@ -80,7 +80,7 @@ const Carousel = ({ images }: CarouselProps) => {
             fontSize: "4.5rem",
             fontWeight: "800",
             marginBottom: "1rem",
-            whiteSpace: "nowrap"
+            // whiteSpace: "nowrap"
           }}
         >
           TSK Exports and Imports
