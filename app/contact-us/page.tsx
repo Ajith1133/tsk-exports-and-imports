@@ -22,6 +22,8 @@ export default function ContactUs() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+                    console.log("axiosInstance baseURL:", axiosInstance.defaults.baseURL); // ✅ Debug log
+            console.log("axiosInstance:", axiosInstance); // ✅ Debug log
         try {
             setLoading(true);
             const submissionData = {
@@ -66,11 +68,9 @@ export default function ContactUs() {
 
     return (
         <main className="container">
-            <h1 style={{ color: "#7393B3" }}>Contact Us</h1>
-
+            <h1 style={{ color: "#1E2D3B" }}>Contact Us</h1>
             <div
                 style={{
-                    maxWidth: "900px",
                     margin: "0 auto",
                 }}
             >
@@ -188,8 +188,8 @@ export default function ContactUs() {
                                 type="submit"
                                 disabled={loading}
                                 style={{
-                                    background: loading ? "#b8c5d1" : "#7393B3",
-                                    color: "#fff",
+                                    background: loading ? "#7c6b3a" : "#F4CB4D",
+                                    color: "#1E2D3B",
                                     padding: "12px 28px",
                                     fontSize: "15px",
                                     border: "none",
@@ -198,10 +198,13 @@ export default function ContactUs() {
                                     transition: "0.2s",
                                 }}
                                 onMouseOver={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#5f7fa3";
+                                    if (!loading)
+                                        e.currentTarget.style.background = "#7c6b3a";
+                                    e.currentTarget.style.color = "#d1d5db";
                                 }}
                                 onMouseOut={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#7393B3";
+                                    if (!loading) e.currentTarget.style.background = "#F4CB4D";
+                                    e.currentTarget.style.color = "#1E2D3B";
                                 }}
                             >
                                 {loading ? "Submitting..." : "Submit"}
@@ -288,7 +291,8 @@ export default function ContactUs() {
                             <a href="tel:+917358501234" style={{
                                 color: "#1e293b",
                                 textDecoration: "none",
-                                fontWeight: 500
+                                fontWeight: 500,
+                                borderBottom: "none",
                             }}>
                                 +91-7358501234
                             </a>
@@ -299,7 +303,8 @@ export default function ContactUs() {
                             <a href="mailto:enquiry@tskexportsandimports.com" style={{
                                 color: "#1e293b",
                                 textDecoration: "none",
-                                fontWeight: 500
+                                fontWeight: 500,
+                                borderBottom: "none",
                             }}>
                                 enquiry@tskexportsandimports.com
                             </a>
@@ -313,7 +318,8 @@ export default function ContactUs() {
                                 style={{
                                     color: "#25D366",
                                     textDecoration: "none",
-                                    fontWeight: 500
+                                    fontWeight: 500,
+                                    borderBottom: "none",
                                 }}
                             >
                                 Chat with us

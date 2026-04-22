@@ -36,36 +36,23 @@ export default function RootLayout({
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "right",
             padding: "1.5rem 2rem",
-            height: "80px",
-            background: "linear-gradient(to bottom right, #111827, #1f2937, #064e3b)",
-
+            height: "1rem",
+            background: "#F4CB4D",
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <img
-              src="/logo.png"
-              alt="TSK Exports and Imports"
-              style={{
-                height: "200px",
-                width: "auto",
-                objectFit: "contain",
-              }}
-            /> */}
-            <h2>
-              <span style={{ color: "#4ADE80" }}>TSK </span>
-              <span style={{ color: "#fff" }}>Exports and Imports</span>
-            </h2>
-          </div>
           <NavLinks />
+
         </nav>
         {children}
         <footer
           style={{
-            backgroundColor: "#111827",
+            backgroundColor: "#F4CB4D",
             padding: "2rem",
-            marginTop: "4rem",
           }}
         >
           <div
@@ -81,42 +68,40 @@ export default function RootLayout({
             <div
               style={{
                 display: "flex",
-                justifyContent: "flex-end", // Aligns to the right
+                justifyContent: "space-between", // Aligns to the right
                 gap: "3rem",
                 flexWrap: "wrap",
                 marginRight: "1rem",
               }}
             >
-              {/* Phone */}
-              <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
-                  PHONE
+              {/* LEFT SIDE - ADDRESS */}
+              <div style={{ maxWidth: "400px", textAlign: "left" }}>
+                <div style={{ fontSize: "20px", color: "#171309", marginBottom: "8px" }}>
+                  Registered Address
                 </div>
+
+                THASWIKHA EXPORTS AND IMPORTS <br />
+                Ground Floor, Plot No.221, Door No.8/8 <br />
+                Sreevari Enclave, Elango Street <br />
+                Alwarthirunagar, Chennai – 600087
+              </div>
+
+              {/* RIGHT SIDE - CONTACT */}
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: "20px", color: "#171309", marginBottom: "8px" }}>
+                  Contact Us
+                </div>
+
                 <a
                   href="tel:+917358501234"
-                  style={{
-                    color: "#fff",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                    fontSize: "1rem",
-                  }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
                 >
                   +91-7358501234
                 </a>
-              </div>
 
-              <div style={{ marginBottom: "16px", textAlign: "right" }}>
-                <div style={{ fontSize: "12px", color: "#94a3b8", marginBottom: "4px" }}>
-                  EMAIL
-                </div>
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
-                  style={{
-                    color: "#fff",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                    fontSize: "1rem",
-                  }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
                 >
                   enquiry@tskexportsandimports.com
                 </a>
@@ -126,7 +111,7 @@ export default function RootLayout({
             <div
               style={{
                 textAlign: "center",
-                color: "#9CA3AF",
+                color: "#171309",
                 fontSize: "0.875rem",
                 paddingTop: "1rem",
               }}

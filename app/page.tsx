@@ -1,8 +1,12 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Car } from "lucide-react";
+import Carousel from "./components/Carousel";
+import { axiosInstance } from "./helper/api";
+import Products from "./products/page";
 
 
 export default function Home() {
@@ -10,531 +14,435 @@ export default function Home() {
   const images = [
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069346-paddy-wallpapers-1920x476.jpg",
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069320-paddy-wallpapers-1-scaled-1920x476.jpg",
-    "https://tskexportsandimports.com/web/wp-content/uploads/2022/11/container-vessel-1920x476.jpg",
+    "/ExportImportImg.png"
   ];
 
-  const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [form, setForm] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const aboutRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000);
-    return () => clearInterval(interval);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (aboutRef.current) observer.observe(aboutRef.current);
+
+    return () => {
+      if (aboutRef.current) observer.unobserve(aboutRef.current);
+    };
   }, []);
 
-  const prevSlide = () => {
-    setCurrent(current === 0 ? images.length - 1 : current - 1);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const nextSlide = () => {
-    setCurrent(current === images.length - 1 ? 0 : current + 1);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const submissionData = {
+        name: form.name,
+        company: form.company,
+        email: form.email,
+        phone: form.phone,
+        message: form.message,
+      };
+      await axiosInstance.post("/tsk-contact-us", submissionData);
+      setForm({ name: "", company: "", email: "", phone: "", message: "" });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (error) {
+      console.error("Form submit error:", error);
+      alert("Unable to submit form. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+
+  const inputStyle: CSSProperties = {
+    width: "100%",
+    padding: "14px 16px",
+    border: "1px solid #d7e2df",
+    fontSize: "1rem",
+    color: "#1f3c3b",
+    background: "#f8faf8",
+    outline: "none",
+    boxSizing: "border-box",
+  };
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",      // Vertically centers both columns
-          justifyContent: "space-between",  // Puts space between left and right content
-          minHeight: "60vh",        // Takes full viewport height for proper centering
-          maxWidth: "1200px",        // Optional: limits overall width
-          margin: "0 auto",          // Centers the entire container
-          padding: "2rem",
-          gap: "3rem",               // Space between text and image
-        }}
-      >
-        {/* LEFT SIDE - TEXT CONTENT */}
-        <div
-          style={{
-            flex: "1",               // Takes available space
-            textAlign: "left",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "3rem",
-              fontWeight: "400",
-              marginBottom: "1.5rem",
-              letterSpacing: "-0.02em",
-              lineHeight: "1.2",
-            }}
-          >
-            <span style={{ color: "#166534" }}>TSK </span>
-            <span style={{ color: "#111827" }}>Exports and Imports</span>
-          </h1>
 
-          <p
-            style={{
-              fontSize: "1.25rem",
-              color: "#1f2937",
-              marginBottom: "2rem",
-              maxWidth: "42rem",
-              lineHeight: "1.6",
-            }}
-          >
-            Premium exporters of the finest rice varieties.
-            Delivering quality and trust worldwide.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "1rem",
-              justifyContent: "flex-start",
-              flexWrap: "wrap",
-            }}
-          >
-            {/* CONTACT US BUTTON */}
-            <button
-              onClick={() => router.push('/contact-us')}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                whiteSpace: "nowrap",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                transition: "all 0.2s",
-                backgroundColor: "#16A34A", // green-600
-                color: "#FFFFFF",
-                borderRadius: "0.375rem",
-                height: "2.5rem",
-                paddingLeft: "2rem",
-                paddingRight: "2rem",
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-                border: "none",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#15803D"; // green-700
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#16A34A"; // green-600
-              }}
-            >
-              Contact Us
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </button>
+      <Carousel images={images} />
 
-            {/* VIEW PRODUCTS BUTTON */}
-            <button
-              onClick={() => router.push('/products')}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                whiteSpace: "nowrap",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                transition: "all 0.2s",
-                backgroundColor: "transparent",
-                color: "#4ADE80",
-                borderRadius: "0.375rem",
-                height: "2.5rem",
-                paddingLeft: "2rem",
-                paddingRight: "2rem",
-                paddingTop: "0.5rem",
-                paddingBottom: "0.5rem",
-                border: "1px solid #4ADE80",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "#4ADE80";
-                (e.target as HTMLElement).style.color = "#111827";
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.backgroundColor = "transparent";
-                (e.target as HTMLElement).style.color = "#4ADE80";
-              }}
-            >
-              View Products
-            </button>
-          </div>
-        </div>
 
-        {/* RIGHT SIDE - IMAGE SLIDER */}
-        <div
-          style={{
-            flex: "1",               // Takes available space
-            position: "relative",
-            borderRadius: "10px",
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={images[current]}
-            alt="slider"
-            style={{
-              width: "100%",
-              height: "400px",
-              objectFit: "cover",
-              borderRadius: "10px",
-            }}
-          />
-
-          {/* LEFT ARROW */}
-          <button
-            onClick={prevSlide}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "10px",
-              transform: "translateY(-50%)",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "50%",
-              width: "40px",
-              height: "40px",
-              cursor: "pointer",
-              fontSize: "18px",
-              zIndex: 10,
-            }}
-          >
-            ‹
-          </button>
-
-          {/* RIGHT ARROW */}
-          <button
-            onClick={nextSlide}
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: "10px",
-              transform: "translateY(-50%)",
-              background: "rgba(0,0,0,0.5)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "50%",
-              width: "40px",
-              height: "40px",
-              cursor: "pointer",
-              fontSize: "18px",
-              zIndex: 10,
-            }}
-          >
-            ›
-          </button>
-        </div>
-      </div>
+      {/* About us and products sections */}
       <div>
         <section
           style={{
-            paddingTop: "4rem",
+            position: "relative",
+            paddingTop: "6rem",
             paddingBottom: "4rem",
-            background: "linear-gradient(to right, #166534, #16A34A)", // from-green-800 to-green-600
-            marginTop: "2rem",
+            background: "#CDEF7F",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "-1px",
+              left: 0,
+              width: "100%",
+              overflow: "hidden",
+              lineHeight: 0,
+            }}
+          >
+            <svg
+              viewBox="0 0 1440 175"
+              style={{ display: "block", width: "100%", height: "100px" }}
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,0 C480,150 960,150 1440,0 L1440,0 L0,0 Z"
+                fill="#ffffff"
+              />
+            </svg>
+          </div>
+
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "stretch",
+              justifyContent: "space-between",
+              minHeight: "500px",
+              gap: "2rem",
+              width: "100%",
+            }}
+          >
+            {/* <div
+              style={{
+                flex: "1",
+                minHeight: "500px",
+                
+              }}
+            >
+              <img
+                src="https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069346-paddy-wallpapers-1920x476.jpg"
+                alt="paddy fields"
+                style={{
+                  width: "80%",
+                  height: "100%",
+                  objectFit: "cover",
+                  marginLeft: "4rem",
+                  padding: "2rem",
+                }}
+              />
+            </div> */}
+
+            <div
+              style={{
+                flex: "1",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                gap: ".5rem",
+                padding: "2rem",
+                alignItems: "center",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "3.5rem",
+                  marginBottom: "1rem",
+                  color: "#161306",
+                  letterSpacing: "1px",
+                  fontWeight: "400",
+                }}
+              >
+                About Us
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.125rem",
+                  color: "#070b12",
+                  marginBottom: "1rem",
+                  width: "70%",
+                }}
+              >
+                "Thaswikha Exports and Imports" was established in the year 2016 in Chennai, Tamilnadu,
+                India and with primary focus of reaching the international market to meet the supply
+                and demand. We are a leading exporter of all varieties of Non-Basmati Rice with superior
+                quality of international standards. We believe in Quality of product is the primary
+                aspect of any business especially in exports and Imports. We trust on
+                "No Quality – No Business".
+              </p>
+
+              <p
+                style={{
+                  fontSize: "1.125rem",
+                  color: "#070b12",
+                  marginBottom: "1rem",
+                  width: "70%",
+                }}
+              >
+                India is the world's largest producer of Rice. It contributes 21.5 percent of global
+                rice production. Within the country, rice occupies one-quarter of the total cropped
+                area and it contributes about 40 to 43 percent of total food grain production and
+                It continues to play vital role in the national exports.
+              </p>
+
+              <div>
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/about-us');
+                  }}
+                  style={{
+                    display: "inline-block",
+                    backgroundColor: "#F4CB4D",
+                    color: "#1f3c3b",
+                    padding: "12px 30px",
+                    fontSize: "1rem",
+                    fontWeight: "700",
+                    textDecoration: "none",
+                    transition: "all 0.3s ease",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#f6c423"
+                    e.currentTarget.style.borderColor = "#F4CB4D"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#F4CB4D"; // Back to original
+                    e.currentTarget.style.borderColor = "#7c6b3a"; // Back to original
+                  }}
+                >
+                  READ MORE
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </section>
+        <Products />
+        <section
+          style={{
+            padding: "4rem 1rem",
+            background: "#f8fafc",
           }}
         >
           <div
             style={{
               maxWidth: "80rem",
               margin: "0 auto",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
             }}
           >
+            {/* HEADER */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(1, 1fr)",
-                gap: "3rem",
-                alignItems: "center",
+                textAlign: "center",
+                marginBottom: "2rem",
               }}
             >
-              {/* Content Section */}
-              <div>
-                <h2
-                  style={{
-                    fontSize: "1.875rem",
-                    marginBottom: "0.5rem",
-                    color: "#FDE68A",
-                    textAlign: "center",
-                    letterSpacing: "1px",
-                  }}
-                >
-                  About Us
-                </h2>
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  "Thaswikha Exports and Imports" was established in the year 2016 in Chennai, Tamilnadu,
-                  India and with primary focus of reaching the international market to meet the supply
-                  and demand. We are a leading exporter of all varieties of Non-Basmati Rice with superior
-                  quality of international standards. We believe in Quality of product is the primary
-                  aspect of any business especially in exports and Imports. We trust on
-                  <strong style={{ color: "#4ADE80" }}> "No Quality – No Business"</strong>.
-                </p>
+              <h2
+                style={{
+                  fontSize: "3rem",
+                  marginBottom: "0.5rem",
+                  color: "#1E2D3B",
+                }}
+              >
+                Certifications & Memberships
+              </h2>
 
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  India is the world's largest producer of Rice. It contributes 21.5 percent of global
-                  rice production. Within the country, rice occupies one-quarter of the total cropped
-                  area and it contributes about 40 to 43 percent of total food grain production and
-                  It continues to play vital role in the national exports.
-                </p>
-                <p
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#D1D5DB",
-                    lineHeight: "1.8",
-                    textAlign: "center",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  Major destinations for India's non-basmati rice exports are Bangladesh, Australia,
-                  Bahrain, Ethiopia, Djibouti, France, Germany, U.K., Hong Kong, Korea, Sri-Lanka,
-                  Maldives, Mauritius, Malaysia, Nigeria, Ivory coast, Indonesia, Nepal, Oman, Qatar,
-                  Russia, South Africa, Saudi Arabia, Somalia, Singapore, U.A.E., Y.A.R., etc.
-                </p>
+              <span
+                style={{
+                  color: "#6b7280",
+                  fontSize: "1rem",
+                }}
+              >
+                FASSAI, ISO (3), MSME, APEDA
+              </span>
+            </div>
 
-                <div style={{ textAlign: "center" }}>
-                  <a
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push('/about-us');
-                    }}
-                    style={{
-                      display: "inline-block",
-                      backgroundColor: "#4ADE80",
-                      color: "#1F2937",
-                      padding: "12px 30px",
-                      fontSize: "1rem",
-                      fontWeight: "600",
-                      textDecoration: "none",
-                      borderRadius: "5px",
-                      transition: "all 0.3s ease",
-                      cursor: "pointer",
-                      border: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.backgroundColor = "#FDE68A";
-                      (e.target as HTMLElement).style.color = "#1F2937";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.target as HTMLElement).style.backgroundColor = "transparent";
-                      (e.target as HTMLElement).style.color = "#4ADE80";
-                    }}
-                  >
-                    READ MORE
-                  </a>
-                </div>
-              </div>
+            {/* LOGO GRID */}
+            <div
+              style={{
+                background: "#fff",
+                padding: "50px",
+                borderRadius: "10px",
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gap: "32px",
+                alignItems: "center",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+              }}
+            >
+              <img src="/fssai.png" alt="FASSAI" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/iso.svg" alt="ISO" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
+              <img src="/msme.svg" alt="MSME" style={{ width: "100%", height: "200px", objectFit: "contain" }} />
+              <img src="/apeda.svg" alt="APEDA" style={{ width: "100%", height: "100px", objectFit: "contain" }} />
             </div>
           </div>
         </section>
 
         <section
           style={{
-            paddingTop: "4rem",
-            paddingBottom: "4rem",
-            backgroundColor: "#FDE68A", // bg-gray-800
-            marginTop: "2rem", // Optional: adds spacing from previous section
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "2rem",
+            alignItems: "start",
           }}
         >
           <div
             style={{
-              maxWidth: "80rem", // max-w-7xl
-              margin: "0 auto",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
+              background: "radial-gradient(1200px 600px at 75% -10%, rgba(101,163,13,.10), transparent), radial-gradient(900px 500px at -10% 10%, rgba(22,163,74,.12), transparent)",
+              border: "1px solid rgba(96, 125, 130, 0.18)",
+              padding: "2rem",
+              boxShadow: "0 18px 30px rgba(96, 125, 130, 0.08)",
             }}
           >
-            {/* Header Section */}
-            <div
+            <h2
               style={{
-                textAlign: "center",
-                marginBottom: "3rem",
+                margin: "0 0 0.85rem",
+                color: "#1f3c3b",
+                fontSize: "2rem",
               }}
             >
-              <h2
+              Quick Inquiry
+            </h2>
+
+            <p
+              style={{
+                margin: "0 0 1.8rem",
+                color: "#52615d",
+                lineHeight: "1.75",
+              }}
+            >
+              Share your details and we’ll connect with you shortly.
+            </p>
+
+            {success && (
+              <div
                 style={{
-                  fontSize: "1.875rem",
-                  marginBottom: "1rem",
-                  color: "#111827", // text-green-400
+                  marginBottom: "1.5rem",
+                  padding: "1rem 1.25rem",
+                  background: "#d9f7ef",
+                  color: "#17594d",
+                  border: "1px solid #ade1ca",
+                  borderRadius: "14px",
                 }}
               >
-                Our Products
-              </h2>
+                Your message has been sent successfully.
+              </div>
+            )}
 
-            </div>
-
-            <div
+            <form
+              onSubmit={handleSubmit}
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                width: "100%",
               }}
             >
               <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("IR64 Long Grain White Rice (Non Basmati)")}`;
-                }}
                 style={{
-                  textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
-                  cursor: "pointer",
-                  transition: "all 0.1s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937"
-                  e.currentTarget.style.borderColor = "#4ADE80"
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827"; // Back to original
-                  e.currentTarget.style.borderColor = "#374151"; // Back to original
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+                  gap: "2rem",
+                  alignItems: "start",
+                  overflowX: "hidden",
                 }}
               >
-                <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2024/10/ir64-white-rice-370x250.jpg"
-                  alt="IR64 Long Grain White Rice (Non Basmati)"
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    borderRadius: "0.5rem",
-                    marginBottom: "1rem",
-                  }}
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Your Name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  style={inputStyle}
                 />
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#FDE68A", // text-amber-200
-                  }}
-                >
-                  IR64 Long Grain White Rice (Non Basmati)
 
-                </h3>
+                <input
+                  name="company"
+                  type="text"
+                  placeholder="Company Name"
+                  value={form.company}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
+
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  style={inputStyle}
+                />
+
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={form.phone}
+                  onChange={handleChange}
+                  style={inputStyle}
+                />
               </div>
-              <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("IR64 Long Grain Parboiled Rice")}`;
-                }}
+
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                rows={5}
+                value={form.message}
+                onChange={handleChange}
+                required
                 style={{
-                  textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
-                  cursor: "pointer",
+                  ...inputStyle,
+                  resize: "vertical",
+                  minHeight: "140px",
+                }}
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: "fit-content",
+                  padding: "0.95rem 2rem",
+                  border: "none",
+                  fontWeight: "700",
+                  fontSize: "1rem",
+                  background: loading ? "#7c6b3a" : "#F4CB4D",
+                  color: "#1f3c3b",
+                  cursor: loading ? "not-allowed" : "pointer",
                   transition: "all 0.2s ease",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937"
-                  e.currentTarget.style.borderColor = "#4ADE80"
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827"; // Back to original
-                  e.currentTarget.style.borderColor = "#374151"; // Back to original
-                }}
               >
-                <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2018/04/IR64-parboiled-rice-370x250.jpg"
-                  alt="IR64 Long Grain Parboiled Rice"
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    borderRadius: "0.5rem",
-                    marginBottom: "1rem",
-                  }}
-                />
-
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#FDE68A",
-                  }}
-                >
-                  IR64 Long Grain Parboiled Rice
-                </h3>
-              </div>
-              <div
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent("Swarna Parboiled Rice")}`;
-                }}
-                style={{
-                  textAlign: "center",
-                  padding: "1.5rem",
-                  backgroundColor: "#111827",
-                  borderRadius: "0.5rem",
-                  border: "1px solid #374151",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#1F2937";
-                  e.currentTarget.style.borderColor = "#4ADE80";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#111827";
-                  e.currentTarget.style.borderColor = "#374151";
-                }}
-
-              >
-                <img
-                  src="https://tskexportsandimports.com/web/wp-content/uploads/2015/09/swarna-boiled-rice-500x500-1-370x250.jpeg"
-                  alt="Swarna Parboiled Rice"
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    borderRadius: "0.5rem",
-                    marginBottom: "1rem",
-                  }}
-                />
-
-
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    marginBottom: "0.75rem",
-                    fontWeight: "400",
-                    color: "#FDE68A",
-                  }}
-                >
-                  Swarna Parboiled Rice
-                </h3>
-              </div>
-            </div>
+                {loading ? "Submitting..." : "Send Message"}
+              </button>
+            </form>
           </div>
         </section>
 

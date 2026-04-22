@@ -50,7 +50,7 @@ export default function FAQs() {
 
     return (
         <main className="container">
-            <h1 style={{ color: "#7393B3" }}>Frequently Asked Questions</h1>
+            <h1 style={{ color: "#1E2D3B" }}>Frequently Asked Questions</h1>
 
             <div style={{ marginTop: "2rem" }}>
                 {faqs.map((faq, idx) => (
@@ -90,8 +90,8 @@ export default function FAQs() {
                                     fontSize: "18px",
                                     fontWeight: "bold",
                                     lineHeight: "1",
-                                    color: hoverIndex === idx ? "#fff" : "#7393B3",
-                                    background: hoverIndex === idx ? "#7393B3" : "transparent",
+                                    color: hoverIndex === idx ? "#fff" : "#1E2D3B",
+                                    background: hoverIndex === idx ? "#F4CB4D" : "transparent",
                                     transition: "all 0.2s ease",
                                 }}
                             >
