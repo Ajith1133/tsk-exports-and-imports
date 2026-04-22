@@ -7,10 +7,12 @@ import { Car } from "lucide-react";
 import Carousel from "./components/Carousel";
 import { axiosInstance } from "./helper/api";
 import Products from "./products/page";
+import { useGetBreakpoints } from "./hooks/useGetBreakpoints";
 
 
 export default function Home() {
   const router = useRouter();
+  const { isMobile } = useGetBreakpoints();
   const images = [
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069346-paddy-wallpapers-1920x476.jpg",
     "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/wp3069320-paddy-wallpapers-1-scaled-1920x476.jpg",
@@ -366,7 +368,7 @@ export default function Home() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+                  gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(500px, 1fr))",
                   gap: "2rem",
                   alignItems: "start",
                   overflowX: "hidden",
