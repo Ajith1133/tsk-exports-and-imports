@@ -7,7 +7,7 @@ export default function Products() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalProducts = riceProducts.length;
   const visibleItems = 3;
-  const autoScrollIntervalRef = useRef(null);
+  const autoScrollIntervalRef = useRef<any>(null);
 
   const canScrollLeft = currentIndex > 0;
   const canScrollRight = currentIndex + visibleItems < totalProducts;
