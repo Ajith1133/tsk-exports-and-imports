@@ -8,6 +8,7 @@ import Carousel from "./components/Carousel";
 import { axiosInstance } from "./helper/api";
 import Products from "./products/page";
 import { useGetBreakpoints } from "./hooks/useGetBreakpoints";
+import emailjs from '@emailjs/browser';
 
 
 export default function Home() {
@@ -54,28 +55,48 @@ export default function Home() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const submissionData = {
-        name: form.name,
-        company: form.company,
-        email: form.email,
-        phone: form.phone,
-        message: form.message,
-      };
-      await axiosInstance.post("/tsk-contact-us", submissionData);
-      setForm({ name: "", company: "", email: "", phone: "", message: "" });
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 5000);
-    } catch (error) {
-      console.error("Form submit error:", error);
-      alert("Unable to submit form. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        
+        const emailParams = {
+            name: form.name,
+            company: form.company,
+            email: form.email,
+            phone: form.phone,
+            message: form.message,
+        };
+
+        try {
+            setLoading(true);
+
+            const emailResponse = await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+                emailParams,
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+            );
+
+            if (emailResponse.status === 200) {
+                console.log('Email sent successfully!');
+                setForm({
+                    name: "",
+                    company: "",
+                    email: "",
+                    phone: "",
+                    message: "",
+                });
+                setSuccess(true);
+                setTimeout(() => {
+                    setSuccess(false);
+                }, 5000);
+            }
+        } catch (error) {
+            console.error("Error sending email:", error);
+            alert("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
   const inputStyle: CSSProperties = {
