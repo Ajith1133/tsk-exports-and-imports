@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
+import { useEffect, useState } from "react";
 
 export default function NavLinks() {
   const pathname = usePathname();
   const { isMobile } = useGetBreakpoints();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname])
   
   const getStyle = (path: string) => ({
     textDecoration: "none",

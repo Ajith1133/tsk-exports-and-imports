@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { axiosInstance } from "../helper/api";
+import emailjs from '@emailjs/browser';
 
 export default function ContactUs() {
     const [loading, setLoading] = useState(false);
@@ -22,28 +22,29 @@ export default function ContactUs() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-                    console.log("axiosInstance baseURL:", axiosInstance.defaults.baseURL); // ✅ Debug log
-            console.log("axiosInstance:", axiosInstance); // ✅ Debug log
+        
+        const emailParams = {
+            name: form.name,              // matches {{name}}
+            company: form.company,        // matches {{company}}
+            email: form.email,            // matches {{email}}
+            phone: form.phone,            // matches {{phone}}
+            message: form.message,        // matches {{message}}
+            quantity: form.quantity,      // additional field
+            port: form.port,              // additional field
+        };
+
         try {
             setLoading(true);
-            const submissionData = {
-                name: form.name,
-                company: form.company,
-                email: form.email,
-                phone: form.phone,
-                quantity: form.quantity,
-                port: form.port,
-                message: form.message,
-            };
-            console.log("axiosInstance baseURL:", axiosInstance.defaults.baseURL); // ✅ Debug log
-            console.log("axiosInstance:", axiosInstance); // ✅ Debug log
 
-            const response = await axiosInstance.post(
-                "/tsk-contact-us",
-                submissionData
+            const emailResponse = await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+                emailParams,
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
             );
 
-            if (response.data) {
+            if (emailResponse.status === 200) {
+                console.log('Email sent successfully!');
                 setForm({
                     name: "",
                     company: "",
@@ -59,7 +60,7 @@ export default function ContactUs() {
                 }, 5000);
             }
         } catch (error) {
-            console.error("Error submitting form:", error);
+            console.error("Error sending email:", error);
             alert("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
