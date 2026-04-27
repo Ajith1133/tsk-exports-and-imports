@@ -3,19 +3,23 @@
 import { useState, useEffect, useRef } from "react";
 import { riceProducts } from "./productsData";
 import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
+import { useRouter } from "next/navigation";
 
 export default function Products() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalProducts = riceProducts.length;
   const { isMobile } = useGetBreakpoints();
-  
-  // Determine visible items based on screen size
   const visibleItems = isMobile ? 1 : 3;
   const autoScrollIntervalRef = useRef<any>(null);
-
   const canScrollLeft = currentIndex > 0;
   const canScrollRight = currentIndex + visibleItems < totalProducts;
-  
+  const router = useRouter();
+
+
+  const handleProductClick = (productName: string) => {
+    router.push(`/products/${encodeURIComponent(productName)}`);
+  };
+
   const scrollLeft = () => {
     if (canScrollLeft) {
       setCurrentIndex(currentIndex - 1);
@@ -183,9 +187,7 @@ export default function Products() {
             return (
               <div
                 key={rice.name}
-                onClick={() => {
-                  window.location.href = `/products/${encodeURIComponent(rice.name)}`;
-                }}
+                onClick={() => handleProductClick(rice.name)}
                 style={{
                   background: "#fff",
                   borderRadius: "10px",
@@ -211,8 +213,8 @@ export default function Products() {
                   }}
                 />
                 <div style={{ padding: isMobile ? "12px" : "16px" }}>
-                  <h3 style={{ 
-                    margin: "6px 0", 
+                  <h3 style={{
+                    margin: "6px 0",
                     color: "#1E2D3B",
                     fontSize: isMobile ? "1.1rem" : "1.25rem"
                   }}>
