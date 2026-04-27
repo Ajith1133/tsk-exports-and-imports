@@ -3,6 +3,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { useState, useEffect, useRef } from 'react';
+import { useGetBreakpoints } from '../hooks/useGetBreakpoints';
 
 interface CarouselProps {
   images: string[];
@@ -10,8 +11,11 @@ interface CarouselProps {
 
 const Carousel = ({ images }: CarouselProps) => {
   const [showText, setShowText] = useState(false);
-  const swiperRef = useRef<any>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
 
+  const swiperRef = useRef<any>(null);
+  const { isMobile } = useGetBreakpoints();
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowText(true);
@@ -20,7 +24,7 @@ const Carousel = ({ images }: CarouselProps) => {
   }, []);
 
   return (
-    <div style={{ position: "relative", height: "600px" }}>
+    <div style={{ position: "relative", height: isMobile ? "400px" : "600px" }}>
       <Swiper
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
@@ -30,6 +34,10 @@ const Carousel = ({ images }: CarouselProps) => {
         loop={true}
         style={{ height: "100%" }}
         speed={1000}
+         onSlideChange={(swiper) => {
+          const realIndex = swiper.realIndex;
+          setActiveIndex(realIndex);
+        }}
       >
         {images.map((img, index) => (
           <SwiperSlide key={index}>
@@ -77,17 +85,49 @@ const Carousel = ({ images }: CarouselProps) => {
       >
         <h1
           style={{
-            fontSize: "4.5rem",
-            fontWeight: "800",
+            fontSize: isMobile ? "1.75rem" : "4.5rem",
+            fontWeight: isMobile ? "700" : "800",
             marginBottom: "1rem",
             // whiteSpace: "nowrap"
           }}
         >
           TSK Exports and Imports
         </h1>
-        <p style={{ fontSize: "1.3rem" }}>
+        <p style={{ fontSize: isMobile? "1rem" : "1.3rem" }}>
           Premium exporters of the finest rice varieties. Delivering quality and trust worldwide.
         </p>
+      </div>
+
+       <div
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          justifyContent: "center",
+          gap: "12px",
+          zIndex: 20,
+        }}
+      >
+        {images.map((_, idx) => (
+          <div
+            key={idx}
+            onClick={() => {
+              if (swiperRef.current) {
+                swiperRef.current.slideTo(idx);
+              }
+            }}
+            style={{
+              width: activeIndex === idx ? "10px" : "8px",
+              height: activeIndex === idx ? "10px" : "8px",
+              borderRadius: "50%",
+              backgroundColor: activeIndex === idx ? "#ffffff" : "rgba(255,255,255,0.5)",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+            }}
+          />
+        ))}
       </div>
 
       {/* Custom Grey Navigation Arrows as Buttons */}
