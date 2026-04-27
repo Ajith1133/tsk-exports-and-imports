@@ -1,40 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import emailjs from '@emailjs/browser';
+import {
+    Form,
+    Input,
+    Button,
+    Row,
+    Col,
+    Select,
+    message,
+    Space,
+    ConfigProvider,
+} from "antd";
+import { countriesData } from "../helper/countryid";
 
 export default function ContactUs() {
+    const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [form, setForm] = useState({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        quantity: "",
-        port: "",
-        message: "",
-    });
+    const [error, setError] = useState("");
+    const [selectedCallingCode, setSelectedCallingCode] = useState("");
 
-    const handleChange = (e: any) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+    // Use useMemo to prevent recalculation on every render
+    const countryOptions = useMemo(() => {
+        // Filter countries with valid data and remove duplicates by callingCode
+        const countryCodes = countriesData
+            .filter((c) => c.country && c.callingCode && c.callingCode !== "+0")
+            .filter(
+                (c, i, arr) =>
+                    i === arr.findIndex((o) => o.callingCode === c.callingCode)
+            );
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        
+        // Map to options format
+        return countryCodes.map((c) => ({
+            value: c.countryCode,
+            label: `${c.countryCode} (+${c.callingCode})`,
+            searchLabel: `${c.country} (${c.countryCode}) +${c.callingCode}`,
+            callingCode: c.callingCode,
+            country: c.country,
+        }));
+    }, []);
+
+    const handleSubmit = async (values: any) => {
+        // Combine country code and phone number
+        const fullPhone = `+${selectedCallingCode}${values.phone}`;
+
         const emailParams = {
-            name: form.name,              // matches {{name}}
-            company: form.company,        // matches {{company}}
-            email: form.email,            // matches {{email}}
-            phone: form.phone,            // matches {{phone}}
-            message: form.message,        // matches {{message}}
-            quantity: form.quantity,      // additional field
-            port: form.port,              // additional field
+            name: values.name,
+            company: values.company || "",
+            email: values.email,
+            phone: fullPhone,
+            message: values.message,
+            quantity: values.quantity || "",
+            port: values.port || "",
         };
 
         try {
             setLoading(true);
+            setError("");
 
             const emailResponse = await emailjs.send(
                 process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
@@ -45,15 +69,9 @@ export default function ContactUs() {
 
             if (emailResponse.status === 200) {
                 console.log('Email sent successfully!');
-                setForm({
-                    name: "",
-                    company: "",
-                    email: "",
-                    phone: "",
-                    quantity: "",
-                    port: "",
-                    message: "",
-                });
+                message.success("Form submitted successfully! We'll get back to you soon.");
+                form.resetFields();
+                setSelectedCallingCode("");
                 setSuccess(true);
                 setTimeout(() => {
                     setSuccess(false);
@@ -61,277 +79,462 @@ export default function ContactUs() {
             }
         } catch (error) {
             console.error("Error sending email:", error);
-            alert("Something went wrong. Please try again.");
+            message.error("Something went wrong. Please try again.");
+            setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
+    const handleCountryCodeChange = (value: string) => {
+        const selectedCountry = countryOptions.find(c => c.value === value);
+        setSelectedCallingCode(selectedCountry?.callingCode || "");
+        form.setFieldValue("countryCode", value);
+    };
+
     return (
-        <main className="container">
-            <h1 style={{ color: "#1E2D3B" }}>Contact Us</h1>
-            <div
-                style={{
-                    margin: "0 auto",
-                }}
-            >
-                <p
+
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#F4CB4D", // This changes focus/hover colors
+                },
+                components: {
+                    Input: {
+                        activeBorderColor: "#F4CB4D",
+                        hoverBorderColor: "#F4CB4D",
+                        activeShadow: "0 0 0 2px rgba(244, 203, 77, 0.2)",
+                    },
+                    Select: {
+                        activeBorderColor: "#F4CB4D",
+                        hoverBorderColor: "#F4CB4D",
+                    },
+                },
+            }}
+        >
+            <main className="container">
+                <h1 style={{ color: "#1E2D3B" }}>Contact Us</h1>
+                <div
                     style={{
+                        margin: "0 auto",
+                    }}
+                >
+                    <p
+                        style={{
+                            fontSize: "1.1rem",
+                            fontWeight: 500,
+                            color: "#4e5d6c",
+                            marginBottom: "1.5rem",
+                        }}
+                    >
+                        Please fill the below details and Submit the Form, we will get in touch with you in 24 hours.
+                    </p>
+
+                    {success && (
+                        <div
+                            style={{
+                                backgroundColor: "#d4edda",
+                                color: "#155724",
+                                padding: "12px 20px",
+                                borderRadius: "8px",
+                                marginBottom: "20px",
+                                border: "1px solid #c3e6cb",
+                            }}
+                        >
+                            ✅ Form submitted successfully! We'll get back to you soon.
+                        </div>
+                    )}
+
+                    {error && (
+                        <div
+                            style={{
+                                backgroundColor: "#f8d7da",
+                                color: "#721c24",
+                                padding: "12px 20px",
+                                borderRadius: "8px",
+                                marginBottom: "20px",
+                                border: "1px solid #f5c6cb",
+                            }}
+                        >
+                            ❌ {error}
+                        </div>
+                    )}
+
+                    <div
+                        style={{
+                            background: "#fff",
+                            borderRadius: "16px",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                            padding: "24px",
+                            marginBottom: "2rem",
+                        }}
+                    >
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            onFinish={handleSubmit}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "16px",
+                            }}
+                        >
+                            <Row gutter={[16, 16]}>
+                                {/* NAME */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        name="name"
+                                        label="Your Name"
+                                        rules={[
+                                            { required: true, message: "Please input your name!" },
+                                            { max: 100, message: "Name must be less than 100 characters" },
+                                            {
+                                                pattern: /^[A-Za-z\s]+$/,
+                                                message: "Name should not contain numbers or special characters",
+                                            },
+                                        ]}
+                                    >
+                                        <Input
+                                            size="large"
+                                            maxLength={100}
+                                            placeholder="Your Name *"
+                                            style={{
+                                                padding: "14px 16px",
+                                                fontSize: "15px",
+                                                borderRadius: "10px",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                {/* COMPANY */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        name="company"
+                                        label="Company Name"
+                                        rules={[
+                                            { max: 100, message: "Company name must be less than 100 characters" },
+                                        ]}
+                                    >
+                                        <Input
+                                            size="large"
+                                            maxLength={100}
+                                            placeholder="Company Name"
+                                            style={{
+                                                padding: "14px 16px",
+                                                fontSize: "15px",
+                                                borderRadius: "10px",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                {/* EMAIL */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        name="email"
+                                        label="Email"
+                                        rules={[
+                                            { required: true, message: "Please input your E-mail!" },
+                                            { type: "email", message: "The input is not a valid E-mail!" },
+                                            { max: 75, message: "Email must be less than 75 characters" },
+                                        ]}
+                                        normalize={(value) => value?.trim().toLowerCase()}
+                                    >
+                                        <Input
+                                            size="large"
+                                            maxLength={75}
+                                            placeholder="Email Address *"
+                                            style={{
+                                                padding: "14px 16px",
+                                                fontSize: "15px",
+                                                borderRadius: "10px",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                {/* PHONE with Country Code */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item label="Phone Number" required>
+                                        <Space.Compact style={{ width: "100%" }}>
+                                            <Form.Item
+                                                name="countryCode"
+                                                noStyle
+                                                rules={[{ required: true, message: "Please select country code" }]}
+                                            >
+                                                <Select
+                                                    showSearch
+                                                    size="large"
+                                                    placeholder="Code"
+                                                    style={{
+                                                        width: "35%",
+                                                        borderRadius: "10px 0 0 10px",
+                                                        fontSize: "15px",
+                                                    }}
+                                                    optionFilterProp="searchLabel"
+                                                    options={countryOptions}
+                                                    onChange={handleCountryCodeChange}
+                                                    filterOption={(input, option: any) =>
+                                                        option?.searchLabel
+                                                            ?.toLowerCase()
+                                                            .includes(input.toLowerCase())
+                                                    }
+                                                />
+                                            </Form.Item>
+
+
+                                            <Form.Item
+                                                name="phone"
+                                                noStyle
+                                                rules={[
+                                                    {
+                                                        pattern: /^[0-9]{5,15}$/,
+                                                        message: "Please enter a valid phone number (5-15 digits)",
+                                                    },
+                                                ]}
+                                            >
+                                                <Input
+                                                    size="large"
+                                                    placeholder="Phone Number"
+                                                    maxLength={20}
+                                                    style={{
+                                                        width: "65%",
+                                                        borderRadius: "0 10px 10px 0",
+                                                        padding: "14px 16px",
+                                                        fontSize: "15px",
+                                                    }}
+                                                    prefix={
+                                                        // ✅ Always render a span, even when empty - keeps DOM structure stable
+                                                        <span style={{ color: '#999', marginRight: '8px' }}>
+                                                            {selectedCallingCode ? `+${selectedCallingCode}` : ''}
+                                                        </span>
+                                                    }
+                                                />
+                                            </Form.Item>
+                                        </Space.Compact>
+                                    </Form.Item>
+                                </Col>
+
+                                {/* QUANTITY */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        name="quantity"
+                                        label="Quantity Required"
+                                        rules={[
+                                            { max: 50, message: "Quantity must be less than 50 characters" },
+                                            {
+                                                pattern: /^[0-9\s]*$/,
+                                                message: "Only numbers allowed",
+                                            },
+                                        ]}
+                                    >
+                                        <Input
+                                            size="large"
+                                            maxLength={50}
+                                            placeholder="Quantity Required"
+                                            style={{
+                                                padding: "14px 16px",
+                                                fontSize: "15px",
+                                                borderRadius: "10px",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                {/* PORT */}
+                                <Col xs={24} md={12}>
+                                    <Form.Item
+                                        name="port"
+                                        label="Destination Port"
+                                        rules={[
+                                            { max: 100, message: "Port must be less than 100 characters" },
+                                        ]}
+                                    >
+                                        <Input
+                                            size="large"
+                                            maxLength={100}
+                                            placeholder="Destination Air/Sea Port"
+                                            style={{
+                                                padding: "14px 16px",
+                                                fontSize: "15px",
+                                                borderRadius: "10px",
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+
+                            {/* MESSAGE */}
+                            <Form.Item
+                                name="message"
+                                label="Message"
+                                rules={[
+                                    { required: true, message: "Please input your message!" },
+                                    { max: 1000, message: "Message must be less than 1000 characters" },
+                                ]}
+                            >
+                                <Input.TextArea
+                                    rows={6}
+                                    maxLength={1000}
+                                    showCount
+                                    placeholder="Your Message *"
+                                    style={{
+                                        padding: "14px 16px",
+                                        fontSize: "15px",
+                                        borderRadius: "10px",
+                                    }}
+                                />
+                            </Form.Item>
+
+                            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                    size="large"
+                                    style={{
+                                        background: loading ? "#7c6b3a" : "#F4CB4D",
+                                        color: "#1E2D3B",
+                                        padding: "12px 28px",
+                                        fontSize: "15px",
+                                        border: "none",
+                                        borderRadius: "8px",
+                                        fontWeight: 600,
+                                        height: "auto",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (!loading) {
+                                            e.currentTarget.style.background = "#7c6b3a";
+                                            e.currentTarget.style.color = "#d1d5db";
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!loading) {
+                                            e.currentTarget.style.background = "#F4CB4D";
+                                            e.currentTarget.style.color = "#1E2D3B";
+                                        }
+                                    }}
+                                >
+                                    {loading ? "Submitting..." : "Submit"}
+                                </Button>
+                            </div>
+                        </Form>
+                    </div>
+                </div>
+
+                <div style={{ marginTop: "3rem" }}>
+                    <p style={{
                         fontSize: "1.1rem",
                         fontWeight: 500,
                         color: "#4e5d6c",
                         marginBottom: "1.5rem",
-                    }}
-                >
-                    Please fill the below details and Submit the Form, we will get in touch with you in 24 hours.
-                </p>
+                        textAlign: "center"
+                    }}>
+                        For inquiries, orders, or partnership opportunities, please reach out:
+                    </p>
 
-
-                {success && (
                     <div
                         style={{
-                            backgroundColor: "#d4edda",
-                            color: "#155724",
-                            padding: "12px 20px",
-                            borderRadius: "8px",
-                            marginBottom: "20px",
-                            border: "1px solid #c3e6cb",
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr",
+                            gap: "24px",
                         }}
                     >
-                        ✅ Form submitted successfully! We'll get back to you soon.
-                    </div>
-                )}
+                        <div
+                            style={{
+                                background: "#fff",
+                                borderRadius: "16px",
+                                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                                padding: "24px",
+                            }}
+                        >
+                            <h3 style={{
+                                marginBottom: "16px",
+                                color: "#7393B3",
+                                fontSize: "18px",
+                                fontWeight: 600
+                            }}>
+                                Visit Us
+                            </h3>
 
-                <div
-                    style={{
-                        background: "#fff",
-                        borderRadius: "16px",
-                        boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                        padding: "24px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <form
-                        onSubmit={handleSubmit}
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "16px",
-                        }}
-                    >
+                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                                THASWIKHA EXPORTS AND IMPORTS
+                            </p>
+                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                                Ground Floor, Plot No.221
+                            </p>
+                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                                Door No.8/8, Sreevari Enclave
+                            </p>
+                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                                Elango Street, Alwarthirunagar
+                            </p>
+                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                                Chennai, Tamil Nadu - 600087
+                            </p>
+                        </div>
 
                         <div
                             style={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr 1fr",
-                                gap: "16px",
+                                background: "#fff",
+                                borderRadius: "16px",
+                                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                                padding: "24px",
                             }}
                         >
-                            {[
-                                { name: "name", placeholder: "Your Name *", required: true },
-                                { name: "company", placeholder: "Company Name" },
-                                { name: "email", placeholder: "Email Address *", type: "email", required: true },
-                                { name: "phone", placeholder: "Phone Number" },
-                                { name: "quantity", placeholder: "Quantity Required" },
-                                { name: "port", placeholder: "Destination Air/Sea Port" },
-                            ].map((field, i) => (
-                                <input
-                                    key={i}
-                                    name={field.name}
-                                    type={field.type || "text"}
-                                    placeholder={field.placeholder}
-                                    required={field.required}
-                                    value={form[field.name as keyof typeof form]} // ✅ Add value binding
-                                    onChange={handleChange}
-                                    style={{
-                                        width: "100%",
-                                        padding: "14px 16px",
-                                        fontSize: "15px",
-                                        borderRadius: "10px",
-                                        border: "1px solid #d0d7e2",
-                                        outline: "none",
-                                        boxSizing: "border-box",
-                                        transition: "0.2s",
-                                    }}
-                                    onFocus={(e) => {
-                                        e.target.style.borderColor = "#7393B3";
-                                        e.target.style.boxShadow = "0 0 0 2px rgba(115,147,179,0.2)";
-                                    }}
-                                    onBlur={(e) => {
-                                        e.target.style.borderColor = "#d0d7e2";
-                                        e.target.style.boxShadow = "none";
-                                    }}
-                                />
-                            ))}
-                        </div>
-
-                        {/* TEXTAREA */}
-                        <textarea
-                            name="message"
-                            placeholder="Your Message"
-                            rows={6}
-                            value={form.message} // ✅ Add value binding
-                            onChange={handleChange}
-                            style={{
-                                width: "100%",
-                                padding: "14px 16px",
-                                fontSize: "15px",
-                                borderRadius: "10px",
-                                border: "1px solid #d0d7e2",
-                                outline: "none",
-                                resize: "none",
-                                boxSizing: "border-box",
-                            }}
-                        />
-
-                        <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                style={{
-                                    background: loading ? "#7c6b3a" : "#F4CB4D",
-                                    color: "#1E2D3B",
-                                    padding: "12px 28px",
-                                    fontSize: "15px",
-                                    border: "none",
-                                    borderRadius: "8px",
-                                    cursor: loading ? "not-allowed" : "pointer",
-                                    transition: "0.2s",
-                                }}
-                                onMouseOver={(e) => {
-                                    if (!loading)
-                                        e.currentTarget.style.background = "#7c6b3a";
-                                    e.currentTarget.style.color = "#d1d5db";
-                                }}
-                                onMouseOut={(e) => {
-                                    if (!loading) e.currentTarget.style.background = "#F4CB4D";
-                                    e.currentTarget.style.color = "#1E2D3B";
-                                }}
-                            >
-                                {loading ? "Submitting..." : "Submit"}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-
-            <div style={{ marginTop: "3rem" }}>
-
-                <p style={{
-                    fontSize: "1.1rem",
-                    fontWeight: 500,
-                    color: "#4e5d6c",
-                    marginBottom: "1.5rem",
-                    textAlign: "center"
-                }}>
-                    For inquiries, orders, or partnership opportunities, please reach out:
-                </p>
-
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: "24px",
-                    }}
-                >
-
-                    <div
-                        style={{
-                            background: "#fff",
-                            borderRadius: "16px",
-                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                            padding: "24px",
-                        }}
-                    >
-                        <h3 style={{
-                            marginBottom: "16px",
-                            color: "#7393B3",
-                            fontSize: "18px",
-                            fontWeight: 600
-                        }}>
-                            Visit Us
-                        </h3>
-
-                        <p style={{ margin: "4px 0", color: "#334155" }}>
-                            THASWIKHA EXPORTS AND IMPORTS
-                        </p>
-                        <p style={{ margin: "4px 0", color: "#334155" }}>
-                            Ground Floor, Plot No.221
-                        </p>
-                        <p style={{ margin: "4px 0", color: "#334155" }}>
-                            Door No.8/8, Sreevari Enclave
-                        </p>
-                        <p style={{ margin: "4px 0", color: "#334155" }}>
-                            Elango Street, Alwarthirunagar
-                        </p>
-                        <p style={{ margin: "4px 0", color: "#334155" }}>
-                            Chennai, Tamil Nadu - 600087
-                        </p>
-                    </div>
-
-                    <div
-                        style={{
-                            background: "#fff",
-                            borderRadius: "16px",
-                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                            padding: "24px",
-                        }}
-                    >
-                        <h3 style={{
-                            marginBottom: "16px",
-                            color: "#7393B3",
-                            fontSize: "18px",
-                            fontWeight: 600
-                        }}>
-                            Contact Details
-                        </h3>
-
-                        <div style={{ marginBottom: "16px" }}>
-                            <div style={{ fontSize: "12px", color: "#94a3b8" }}>PHONE</div>
-                            <a href="tel:+917358501234" style={{
-                                color: "#1e293b",
-                                textDecoration: "none",
-                                fontWeight: 500,
-                                borderBottom: "none",
+                            <h3 style={{
+                                marginBottom: "16px",
+                                color: "#7393B3",
+                                fontSize: "18px",
+                                fontWeight: 600
                             }}>
-                                +91-7358501234
-                            </a>
-                        </div>
+                                Contact Details
+                            </h3>
 
-                        <div style={{ marginBottom: "16px" }}>
-                            <div style={{ fontSize: "12px", color: "#94a3b8" }}>EMAIL</div>
-                            <a href="mailto:enquiry@tskexportsandimports.com" style={{
-                                color: "#1e293b",
-                                textDecoration: "none",
-                                fontWeight: 500,
-                                borderBottom: "none",
-                            }}>
-                                enquiry@tskexportsandimports.com
-                            </a>
-                        </div>
-
-                        <div>
-                            <div style={{ fontSize: "12px", color: "#94a3b8" }}>WHATSAPP</div>
-                            <a
-                                href="https://wa.me/917358501234"
-                                target="_blank"
-                                style={{
-                                    color: "#25D366",
+                            <div style={{ marginBottom: "16px" }}>
+                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>PHONE</div>
+                                <a href="tel:+917358501234" style={{
+                                    color: "#1e293b",
                                     textDecoration: "none",
                                     fontWeight: 500,
                                     borderBottom: "none",
-                                }}
-                            >
-                                Chat with us
-                            </a>
+                                }}>
+                                    +91-7358501234
+                                </a>
+                            </div>
+
+                            <div style={{ marginBottom: "16px" }}>
+                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>EMAIL</div>
+                                <a href="mailto:enquiry@tskexportsandimports.com" style={{
+                                    color: "#1e293b",
+                                    textDecoration: "none",
+                                    fontWeight: 500,
+                                    borderBottom: "none",
+                                }}>
+                                    enquiry@tskexportsandimports.com
+                                </a>
+                            </div>
+
+                            <div>
+                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>WHATSAPP</div>
+                                <a
+                                    href="https://wa.me/917358501234"
+                                    target="_blank"
+                                    style={{
+                                        color: "#25D366",
+                                        textDecoration: "none",
+                                        fontWeight: 500,
+                                        borderBottom: "none",
+                                    }}
+                                >
+                                    Chat with us
+                                </a>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </main>
+            </main>
+        </ConfigProvider>
     );
 }
-
-

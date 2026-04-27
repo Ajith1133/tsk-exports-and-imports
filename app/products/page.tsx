@@ -2,16 +2,20 @@
 
 import { useState, useEffect, useRef } from "react";
 import { riceProducts } from "./productsData";
+import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
 
 export default function Products() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalProducts = riceProducts.length;
-  const visibleItems = 3;
+  const { isMobile } = useGetBreakpoints();
+  
+  // Determine visible items based on screen size
+  const visibleItems = isMobile ? 1 : 3;
   const autoScrollIntervalRef = useRef<any>(null);
 
   const canScrollLeft = currentIndex > 0;
   const canScrollRight = currentIndex + visibleItems < totalProducts;
-
+  
   const scrollLeft = () => {
     if (canScrollLeft) {
       setCurrentIndex(currentIndex - 1);
@@ -54,7 +58,7 @@ export default function Products() {
         clearInterval(autoScrollIntervalRef.current);
       }
     };
-  }, [currentIndex]); // Re-run when currentIndex changes to reset timer
+  }, [currentIndex, isMobile]); // Re-run when currentIndex or isMobile changes
 
   // Get the visible products based on current index
   const visibleProducts = riceProducts.slice(currentIndex, currentIndex + visibleItems);
@@ -62,7 +66,7 @@ export default function Products() {
   return (
     <section
       style={{
-        padding: "4rem 1rem",
+        padding: isMobile ? "2rem 1rem" : "4rem 1rem",
       }}
     >
       <div
@@ -75,31 +79,31 @@ export default function Products() {
         {/* HEADER */}
         <div
           style={{
-            textAlign: "left",
+            textAlign: isMobile ? "center" : "left",
             marginBottom: "3rem",
           }}
         >
           <h2
             style={{
-              fontSize: "3rem",
+              fontSize: isMobile ? "1.75rem" : "3rem",
               marginBottom: "0.5rem",
               color: "#1E2D3B",
             }}
           >
-            Our Rice Products
+            Our Products
           </h2>
-          <h4 style={{ color: "#4a5568", fontWeight: "normal" }}>
+          <h4 style={{ color: "#4a5568", fontWeight: "normal", fontSize: isMobile ? "0.9rem" : "1rem" }}>
             Click on any of the below product to view more details and send an enquiry. You can also email us on enquiry@tskexportsandimports.com to get more details.
           </h4>
         </div>
 
-        {/* Left Arrow Button
+        {/* Left Arrow Button */}
         {canScrollLeft && (
           <div
             style={{
               position: "absolute",
               top: "50%",
-              left: "-20px",
+              left: isMobile ? "-10px" : "-20px",
               transform: "translateY(-50%)",
               zIndex: 10,
             }}
@@ -110,14 +114,14 @@ export default function Products() {
                 background: "#fff",
                 border: "none",
                 borderRadius: "50%",
-                width: "40px",
-                height: "40px",
+                width: isMobile ? "32px" : "40px",
+                height: isMobile ? "32px" : "40px",
                 cursor: "pointer",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "20px",
+                fontSize: isMobile ? "16px" : "20px",
                 fontWeight: "bold",
                 color: "#1E2D3B",
                 transition: "all 0.3s ease",
@@ -128,15 +132,15 @@ export default function Products() {
               ❮
             </button>
           </div>
-        )} */}
+        )}
 
         {/* Right Arrow Button */}
-        {/* {canScrollRight && (
+        {canScrollRight && (
           <div
             style={{
               position: "absolute",
               top: "50%",
-              right: "-20px",
+              right: isMobile ? "-10px" : "-20px",
               transform: "translateY(-50%)",
               zIndex: 10,
             }}
@@ -147,14 +151,14 @@ export default function Products() {
                 background: "#fff",
                 border: "none",
                 borderRadius: "50%",
-                width: "40px",
-                height: "40px",
+                width: isMobile ? "32px" : "40px",
+                height: isMobile ? "32px" : "40px",
                 cursor: "pointer",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "20px",
+                fontSize: isMobile ? "16px" : "20px",
                 fontWeight: "bold",
                 color: "#1E2D3B",
                 transition: "all 0.3s ease",
@@ -165,14 +169,14 @@ export default function Products() {
               ❯
             </button>
           </div>
-        )} */}
+        )}
 
-        {/* Grid Container - shows exactly 3 items */}
+        {/* Grid Container - shows 3 items on desktop, 1 on mobile */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "18px",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+            gap: isMobile ? "16px" : "18px",
           }}
         >
           {visibleProducts.map((rice) => {
@@ -202,12 +206,18 @@ export default function Products() {
                   alt={rice.name}
                   style={{
                     width: "100%",
-                    height: "220px",
+                    height: isMobile ? "200px" : "220px",
                     objectFit: "cover",
                   }}
                 />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ margin: "6px 0", color: "#1E2D3B" }}>{rice.name}</h3>
+                <div style={{ padding: isMobile ? "12px" : "16px" }}>
+                  <h3 style={{ 
+                    margin: "6px 0", 
+                    color: "#1E2D3B",
+                    fontSize: isMobile ? "1.1rem" : "1.25rem"
+                  }}>
+                    {rice.name}
+                  </h3>
                   <p
                     style={{
                       color: "#6b7280",
@@ -217,6 +227,7 @@ export default function Products() {
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
+                      fontSize: isMobile ? "0.85rem" : "0.95rem"
                     }}
                   >
                     {rice.desc}
@@ -244,8 +255,8 @@ export default function Products() {
                 resetAutoScroll();
               }}
               style={{
-                width: "8px",
-                height: "8px",
+                width: isMobile ? "10px" : "8px",
+                height: isMobile ? "10px" : "8px",
                 borderRadius: "50%",
                 backgroundColor: currentIndex === idx ? "#7393B3" : "#CBD5E1",
                 cursor: "pointer",
