@@ -305,7 +305,6 @@ export default function ContactUs() {
                                                         fontSize: "15px",
                                                     }}
                                                     prefix={
-                                                        // ✅ Always render a span, even when empty - keeps DOM structure stable
                                                         <span style={{ color: '#999', marginRight: '8px' }}>
                                                             {selectedCallingCode ? `+${selectedCallingCode}` : ''}
                                                         </span>

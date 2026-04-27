@@ -82,6 +82,7 @@ export default function QuickInquiry() {
 
     return (
         <section
+            suppressHydrationWarning
             style={{
                 display: "grid",
                 gridTemplateColumns: "1fr",
@@ -222,11 +223,9 @@ export default function QuickInquiry() {
                                             maxLength={20}
                                             style={{ width: "70%", borderRadius: 0 }}
                                             prefix={
-                                                selectedCallingCode ?
-                                                    <span style={{ color: '#999', marginRight: '8px' }}>
-                                                        +{selectedCallingCode}
-                                                    </span> :
-                                                    null
+                                                <span style={{ color: '#999', marginRight: '8px', minWidth: '30px' }}>
+                                                    {selectedCallingCode ? `+${selectedCallingCode}` : ''}
+                                                </span>
                                             }
                                         />
                                     </Form.Item>
