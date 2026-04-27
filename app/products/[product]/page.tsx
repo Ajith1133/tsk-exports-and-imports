@@ -4,6 +4,7 @@ import ProductClient from "./ProductClient";
 
 // Generate static paths for all products at build time
 export async function generateStaticParams() {
+  console.log("Generating static params for products:", riceProducts.map(p => p.name));
   return riceProducts.map((product) => ({
     product: encodeURIComponent(product.name),
   }));
