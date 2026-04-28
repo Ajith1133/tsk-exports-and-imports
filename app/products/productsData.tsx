@@ -1,6 +1,7 @@
 export const riceProducts = [
     {
         name: "IR64 Long Grain White Rice (Non Basmati)",
+        slug: "ir64-long-grain-white-rice",
         desc: "IR 64 Long Grain White Rice is one of the most exported varieties of Long grain non-basmati rice with average length of 5.8mm to 6.2mm and has good demand in the international market. It's also called Parimal/IR36/Long Grain White Rice. Our White Long Grain Rice is grown in the perfect climatic conditions of Maharashtra, Andhra and Chhattisgarh by expert farmers. With Rich source of carbohydrate and minerals, IR 64 White Rice got good demand in hotels, restaurants and homes for preparing biryani and it is ideal for basic food requirements.",
         img: "/ir64_non_basmathi.png",
         fullDesc: `IR 64 Long Grain White Rice is one of the most exported varieties of Long grain non-basmati rice with average length of 5.8mm to 6.2mm and has good demand in the international market. It's also called Parimal/IR36/Long Grain White Rice.
@@ -15,6 +16,7 @@ Key Benefits:
     },
     {
         name: "IR64 Long Grain Parboiled Rice",
+        slug: "ir64-long-grain-parboiled-rice",
         desc: "Parboiled rice is rice that has been partially boiled in the husk. The three basic steps of parboiling are soaking, steaming and drying. These steps make the rice easier to process by hand, while also boosting its nutritional profile.",
         img: "/ir64_parboiled_rice.png",
         fullDesc: `Parboiled rice is rice that has been partially boiled in the husk. The three basic steps of parboiling are soaking, steaming and drying. These steps make the rice easier to process by hand, while also boosting its nutritional profile, changing its texture, and making it more resistant to weevils.
@@ -47,6 +49,7 @@ Specifications of Parboiled Rice:
     },
     {
         name: "Swarna Parboiled Rice",
+        slug: "swarna-parboiled-rice",
         desc: "Swarna Boiled Rice variety is exclusively grown in Indian States of West Bengal, Assam and Bihar. The grain length is key to this rice which is 5.00 mm.",
         img: "/swarna_rice.png",
         fullDesc: `Swarna Boiled Rice variety is exclusively grown in Indian States of West Bengal, Assam and Bihar. The grain length is key to this rice which is 5.00 mm. We offer Raw or Parboiled Rice form.
@@ -68,6 +71,7 @@ Specifications:
     },
     {
         name: "Parboiled Rejection Rice",
+        slug: "parboiled-rejection-rice",
         desc: "Rejection Rice offered by us, is a type of rice which is Rejection rice as part of parboiled processing and is used for making alcohol, or as animal feed too.",
         img: "https://tskexportsandimports.com/web/wp-content/uploads/2023/05/rejection-rice-1000x1000-1-370x250.jpg",
         fullDesc: `Rejection Rice offered by us, is a type of rice which is Rejection rice as part of parboiled processing and is used for making alcohol, or as animal feed too.
@@ -80,6 +84,7 @@ Product Details:
     },
     {
         name: "Sona Masoori Rice",
+        slug: "sona-masoori-rice",
         desc: "Sona Masuri is a medium-grain non Basmati rice grown largely in the Indian states of Andhra Pradesh, Telangana and Karnataka.",
         img: "https://tskexportsandimports.com/web/wp-content/uploads/2019/08/sonamasoori-rice-370x250.jpg",
         fullDesc: `Sona Masuri (also known as Sona Masoori, Samba Masuri, BPT 5204, HMT, or Jeela Karra Masuri) is a medium-grain non Basmati rice grown largely in the Indian states of Andhra Pradesh, Telangana and Karnataka.
