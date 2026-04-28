@@ -1,273 +1,124 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { riceProducts } from "./productsData";
-import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
-import { useRouter } from "next/navigation";
+import Products from "./products";
 
-export default function Products() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const totalProducts = riceProducts.length;
-  const { isMobile } = useGetBreakpoints();
-  const visibleItems = isMobile ? 1 : 3;
-  const autoScrollIntervalRef = useRef<any>(null);
-  const canScrollLeft = currentIndex > 0;
-  const canScrollRight = currentIndex + visibleItems < totalProducts;
+export default function ProductsPage() {
+  const searchParams = useSearchParams();
   const router = useRouter();
 
+  const productSlug = searchParams.get("product");
 
-  const handleProductClick = (productName: string) => {
-    router.push(`/products/${encodeURIComponent(productName)}`);
-  };
+  const product = riceProducts.find((p) => p.slug === productSlug);
 
-  const scrollLeft = () => {
-    if (canScrollLeft) {
-      setCurrentIndex(currentIndex - 1);
-      resetAutoScroll();
-    }
-  };
-
-  const scrollRight = () => {
-    if (canScrollRight) {
-      setCurrentIndex(currentIndex + 1);
-      resetAutoScroll();
-    }
-  };
-
-  // Auto scroll to next set
-  const autoScroll = () => {
-    if (canScrollRight) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      // Loop back to the beginning
-      setCurrentIndex(0);
-    }
-  };
-
-  // Reset auto scroll timer
-  const resetAutoScroll = () => {
-    if (autoScrollIntervalRef.current) {
-      clearInterval(autoScrollIntervalRef.current);
-    }
-    autoScrollIntervalRef.current = setInterval(autoScroll, 5000); // Change slide every 5 seconds
-  };
-
-  // Start auto scroll on component mount
-  useEffect(() => {
-    resetAutoScroll();
-
-    // Cleanup interval on component unmount
-    return () => {
-      if (autoScrollIntervalRef.current) {
-        clearInterval(autoScrollIntervalRef.current);
-      }
-    };
-  }, [currentIndex, isMobile]); // Re-run when currentIndex or isMobile changes
-
-  // Get the visible products based on current index
-  const visibleProducts = riceProducts.slice(currentIndex, currentIndex + visibleItems);
-
-  return (
-    <section
-      style={{
-        padding: isMobile ? "2rem 1rem" : "4rem 1rem",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "80rem",
-          margin: "0 auto",
-          position: "relative",
-        }}
-      >
-        {/* HEADER */}
-        <div
+  // ✅ DETAIL VIEW
+  if (product) {
+    return (
+      <main style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+        
+        {/* BACK BUTTON - Matching ProductClient style */}
+        <button
+          onClick={() => router.push("/products")}
           style={{
-            textAlign: isMobile ? "center" : "left",
-            marginBottom: "3rem",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: isMobile ? "1.75rem" : "3rem",
-              marginBottom: "0.5rem",
-              color: "#1E2D3B",
-            }}
-          >
-            Our Products
-          </h2>
-          <h4 style={{ color: "#4a5568", fontWeight: "normal", fontSize: isMobile ? "0.9rem" : "1rem" }}>
-            Click on any of the below product to view more details and send an enquiry. You can also email us on enquiry@tskexportsandimports.com to get more details.
-          </h4>
-        </div>
-
-        {/* Left Arrow Button */}
-        {canScrollLeft && (
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: isMobile ? "-10px" : "-20px",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-            }}
-          >
-            <button
-              onClick={scrollLeft}
-              style={{
-                background: "#fff",
-                border: "none",
-                borderRadius: "50%",
-                width: isMobile ? "32px" : "40px",
-                height: isMobile ? "32px" : "40px",
-                cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: isMobile ? "16px" : "20px",
-                fontWeight: "bold",
-                color: "#1E2D3B",
-                transition: "all 0.3s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#F4CB4D")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
-            >
-              ❮
-            </button>
-          </div>
-        )}
-
-        {/* Right Arrow Button */}
-        {canScrollRight && (
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: isMobile ? "-10px" : "-20px",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-            }}
-          >
-            <button
-              onClick={scrollRight}
-              style={{
-                background: "#fff",
-                border: "none",
-                borderRadius: "50%",
-                width: isMobile ? "32px" : "40px",
-                height: isMobile ? "32px" : "40px",
-                cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: isMobile ? "16px" : "20px",
-                fontWeight: "bold",
-                color: "#1E2D3B",
-                transition: "all 0.3s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#F4CB4D")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
-            >
-              ❯
-            </button>
-          </div>
-        )}
-
-        {/* Grid Container - shows 3 items on desktop, 1 on mobile */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
-            gap: isMobile ? "16px" : "18px",
-          }}
-        >
-          {visibleProducts.map((rice) => {
-            return (
-              <div
-                key={rice.name}
-                onClick={() => handleProductClick(rice.name)}
-                style={{
-                  background: "#fff",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-                  transition: "transform 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "translateY(-5px)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "translateY(0)")
-                }
-              >
-                <img
-                  src={rice.img}
-                  alt={rice.name}
-                  style={{
-                    width: "100%",
-                    height: isMobile ? "200px" : "220px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div style={{ padding: isMobile ? "12px" : "16px" }}>
-                  <h3 style={{
-                    margin: "6px 0",
-                    color: "#1E2D3B",
-                    fontSize: isMobile ? "1.1rem" : "1.25rem"
-                  }}>
-                    {rice.name}
-                  </h3>
-                  <p
-                    style={{
-                      color: "#6b7280",
-                      margin: 0,
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: isMobile ? "0.85rem" : "0.95rem"
-                    }}
-                  >
-                    {rice.desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Pagination dots */}
-        <div
-          style={{
+            background: "#F4CB4D",
+            border: "none",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            cursor: "pointer",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
             display: "flex",
+            alignItems: "center",
             justifyContent: "center",
-            marginTop: "2rem",
-            gap: "8px",
+            fontSize: "20px",
+            marginBottom: "2rem",
+            transition: "all 0.3s ease",
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#e0b82b")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#F4CB4D")}
         >
-          {Array.from({ length: totalProducts - visibleItems + 1 }).map((_, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                setCurrentIndex(idx);
-                resetAutoScroll();
-              }}
+          ❮
+        </button>
+
+        {/* Product Content */}
+        <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+          
+          <div style={{ flex: "1", minWidth: "300px" }}>
+            <img
+              src={product.img}
+              alt={product.name}
               style={{
-                width: isMobile ? "10px" : "8px",
-                height: isMobile ? "10px" : "8px",
-                borderRadius: "50%",
-                backgroundColor: currentIndex === idx ? "#7393B3" : "#CBD5E1",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
+                width: "100%",
+                maxWidth: "500px",
+                height: "auto",
+                borderRadius: "8px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
               }}
             />
-          ))}
+          </div>
+
+          <div style={{ flex: "2", minWidth: "300px" }}>
+            <h1 style={{
+              marginBottom: "1rem",
+              marginTop: "0",
+              fontSize: "2rem",
+              color: "#1E2D3B"
+            }}>
+              {product.name}
+            </h1>
+
+            <div style={{
+              fontSize: "1.1rem",
+              lineHeight: "1.6",
+              marginTop: "16px",
+              whiteSpace: "pre-wrap",
+              color: "#334155"
+            }}>
+              {product.fullDesc || product.desc}
+            </div>
+
+            {/* Enquiry Section */}
+            <div style={{
+              marginTop: "2rem",
+              padding: "1.5rem",
+              background: "#f1f5f9",
+              borderRadius: "8px",
+              color: "#1E2D3B"
+            }}>
+              <h3 style={{ marginTop: 0 }}>Send an Enquiry</h3>
+              <p>For more details and pricing, please email us at:</p>
+              <a
+                href={`mailto:enquiry@tskexportsandimports.com?subject=Enquiry about ${encodeURIComponent(product.name)}`}
+                style={{
+                  color: "#F4CB4D",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  textDecoration: "none",
+                  backgroundColor: "#1E2D3B",
+                  padding: "10px 20px",
+                  borderRadius: "5px",
+                  display: "inline-block",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#F4CB4D";
+                  e.currentTarget.style.color = "#1E2D3B";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#1E2D3B";
+                  e.currentTarget.style.color = "#F4CB4D";
+                }}
+              >
+                enquiry@tskexportsandimports.com
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
-  );
+      </main>
+    );
+  }
+
+  // ✅ LIST VIEW
+  return <Products />;
 }
