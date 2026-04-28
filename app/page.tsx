@@ -7,6 +7,8 @@ import QuickInquiry from "./components/QuickInquiry";
 import Certificates from "./components/Certificates";
 import AboutUs from "./components/AboutUs";
 import { ConfigProvider } from "antd";
+import { Suspense } from "react";
+import ProductsClient from "./products/ProductsClient";
 
 
 export default function Home() {
@@ -40,7 +42,9 @@ export default function Home() {
         <>
             <Carousel images={images} />
             <AboutUs />
-            <Products />
+            <Suspense>
+                <ProductsClient />
+            </Suspense>
             <Certificates />
             <ConfigProvider
                 theme={{

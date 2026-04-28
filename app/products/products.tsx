@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { riceProducts } from "./productsData";
+import { riceProducts } from "@/app/products/productsData";
 import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +16,6 @@ export default function Products() {
   const canScrollLeft = currentIndex > 0;
   const canScrollRight = currentIndex + visibleItems < totalProducts;
 
-  // ✅ USE SLUG IN URL
   const handleProductClick = (slug: string) => {
     router.push(`/products?product=${slug}`);
   };
@@ -63,7 +62,6 @@ export default function Products() {
   return (
     <section style={{ padding: isMobile ? "2rem 1rem" : "4rem 1rem" }}>
       <div style={{ maxWidth: "80rem", margin: "0 auto", position: "relative" }}>
-
         {/* HEADER */}
         <div style={{ textAlign: isMobile ? "center" : "left", marginBottom: "3rem" }}>
           <h2 style={{ 
@@ -82,7 +80,7 @@ export default function Products() {
           </h4>
         </div>
 
-        {/* Left Arrow Button */}
+        {/* Navigation Buttons */}
         {canScrollLeft && (
           <div style={{
             position: "absolute",
@@ -117,7 +115,6 @@ export default function Products() {
           </div>
         )}
 
-        {/* Right Arrow Button */}
         {canScrollRight && (
           <div style={{
             position: "absolute",
@@ -152,7 +149,7 @@ export default function Products() {
           </div>
         )}
 
-        {/* GRID */}
+        {/* Products Grid */}
         <div
           style={{
             display: "grid",
@@ -209,7 +206,7 @@ export default function Products() {
           ))}
         </div>
 
-        {/* Pagination dots */}
+        {/* Pagination Dots */}
         <div style={{
           display: "flex",
           justifyContent: "center",
