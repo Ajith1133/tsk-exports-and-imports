@@ -14,6 +14,7 @@ import {
     ConfigProvider,
 } from "antd";
 import { countriesData } from "../helper/countryid";
+import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
 
 export default function ContactUs() {
     const [form] = Form.useForm();
@@ -21,7 +22,8 @@ export default function ContactUs() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [selectedCallingCode, setSelectedCallingCode] = useState("");
-
+    const { isMobile } = useGetBreakpoints();
+    
     // Use useMemo to prevent recalculation on every render
     const countryOptions = useMemo(() => {
         // Filter countries with valid data and remove duplicates by callingCode
@@ -93,11 +95,10 @@ export default function ContactUs() {
     };
 
     return (
-
         <ConfigProvider
             theme={{
                 token: {
-                    colorPrimary: "#F4CB4D", // This changes focus/hover colors
+                    colorPrimary: "#F4CB4D",
                 },
                 components: {
                     Input: {
@@ -112,63 +113,64 @@ export default function ContactUs() {
                 },
             }}
         >
-            <main className="container">
-                <h1 style={{ color: "#1E2D3B" }}>Contact Us</h1>
-                <div
-                    style={{
-                        margin: "0 auto",
-                    }}
-                >
-                    <p
-                        style={{
-                            fontSize: "1.1rem",
-                            fontWeight: 500,
-                            color: "#4e5d6c",
-                            marginBottom: "1.5rem",
-                        }}
-                    >
+            <main style={{
+                margin: "0 auto",
+                padding: "2rem 1rem",
+                fontFamily: "Segoe UI, Arial, sans-serif",
+                color: "#1f3c3b",
+                maxWidth: isMobile ? "100%" : "80%",
+                overflowX: "hidden",
+            }}>
+                <h1 style={{ 
+                    color: "#1E2D3B",
+                    fontSize: isMobile ? "clamp(1.5rem, 6vw, 2rem)" : "2rem"
+                }}>
+                    Contact Us
+                </h1>
+                
+                <div style={{ margin: "0 auto" }}>
+                    <p style={{
+                        fontSize: isMobile ? "1rem" : "1.1rem",
+                        fontWeight: 500,
+                        color: "#4e5d6c",
+                        marginBottom: "1.5rem",
+                    }}>
                         Please fill the below details and Submit the Form, we will get in touch with you in 24 hours.
                     </p>
 
                     {success && (
-                        <div
-                            style={{
-                                backgroundColor: "#d4edda",
-                                color: "#155724",
-                                padding: "12px 20px",
-                                borderRadius: "8px",
-                                marginBottom: "20px",
-                                border: "1px solid #c3e6cb",
-                            }}
-                        >
-                            ✅ Form submitted successfully! We'll get back to you soon.
+                        <div style={{
+                            backgroundColor: "#d4edda",
+                            color: "#155724",
+                            padding: "12px 20px",
+                            borderRadius: "8px",
+                            marginBottom: "20px",
+                            border: "1px solid #c3e6cb",
+                        }}>
+                            Form submitted successfully! We'll get back to you soon.
                         </div>
                     )}
 
                     {error && (
-                        <div
-                            style={{
-                                backgroundColor: "#f8d7da",
-                                color: "#721c24",
-                                padding: "12px 20px",
-                                borderRadius: "8px",
-                                marginBottom: "20px",
-                                border: "1px solid #f5c6cb",
-                            }}
-                        >
-                            ❌ {error}
+                        <div style={{
+                            backgroundColor: "#f8d7da",
+                            color: "#721c24",
+                            padding: "12px 20px",
+                            borderRadius: "8px",
+                            marginBottom: "20px",
+                            border: "1px solid #f5c6cb",
+                        }}>
+                            {error}
                         </div>
                     )}
 
-                    <div
-                        style={{
-                            background: "#fff",
-                            borderRadius: "16px",
-                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                            padding: "24px",
-                            marginBottom: "2rem",
-                        }}
-                    >
+                    <div style={{
+                        background: "#fff",
+                        borderRadius: "16px",
+                        boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                        padding: isMobile ? "16px" : "24px",
+                        marginBottom: "2rem",
+                    }}>
                         <Form
                             form={form}
                             layout="vertical"
@@ -282,7 +284,6 @@ export default function ContactUs() {
                                                     }
                                                 />
                                             </Form.Item>
-
 
                                             <Form.Item
                                                 name="phone"
@@ -422,9 +423,10 @@ export default function ContactUs() {
                     </div>
                 </div>
 
+                {/* Contact Information Section - Mobile Responsive */}
                 <div style={{ marginTop: "3rem" }}>
                     <p style={{
-                        fontSize: "1.1rem",
+                        fontSize: isMobile ? "1rem" : "1.1rem",
                         fontWeight: 500,
                         color: "#4e5d6c",
                         marginBottom: "1.5rem",
@@ -433,90 +435,92 @@ export default function ContactUs() {
                         For inquiries, orders, or partnership opportunities, please reach out:
                     </p>
 
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr",
-                            gap: "24px",
-                        }}
-                    >
-                        <div
-                            style={{
-                                background: "#fff",
-                                borderRadius: "16px",
-                                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                                padding: "24px",
-                            }}
-                        >
+                    {/* ✅ Mobile: Stack vertically, Desktop: Side by side */}
+                    <div style={{
+                        display: "flex",
+                        flexDirection: isMobile ? "column" : "row",
+                        gap: "24px",
+                    }}>
+                        {/* Address Card */}
+                        <div style={{
+                            flex: 1,
+                            background: "#fff",
+                            borderRadius: "16px",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                            padding: isMobile ? "20px" : "24px",
+                        }}>
                             <h3 style={{
                                 marginBottom: "16px",
                                 color: "#7393B3",
-                                fontSize: "18px",
+                                fontSize: isMobile ? "16px" : "18px",
                                 fontWeight: 600
                             }}>
                                 Visit Us
                             </h3>
 
-                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                            <p style={{ margin: "4px 0", color: "#334155", fontSize: isMobile ? "14px" : "16px" }}>
                                 THASWIKHA EXPORTS AND IMPORTS
                             </p>
-                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                            <p style={{ margin: "4px 0", color: "#334155", fontSize: isMobile ? "14px" : "16px" }}>
                                 Ground Floor, Plot No.221
                             </p>
-                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                            <p style={{ margin: "4px 0", color: "#334155", fontSize: isMobile ? "14px" : "16px" }}>
                                 Door No.8/8, Sreevari Enclave
                             </p>
-                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                            <p style={{ margin: "4px 0", color: "#334155", fontSize: isMobile ? "14px" : "16px" }}>
                                 Elango Street, Alwarthirunagar
                             </p>
-                            <p style={{ margin: "4px 0", color: "#334155" }}>
+                            <p style={{ margin: "4px 0", color: "#334155", fontSize: isMobile ? "14px" : "16px" }}>
                                 Chennai, Tamil Nadu - 600087
                             </p>
                         </div>
 
-                        <div
-                            style={{
-                                background: "#fff",
-                                borderRadius: "16px",
-                                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-                                padding: "24px",
-                            }}
-                        >
+                        {/* Contact Details Card */}
+                        <div style={{
+                            flex: 1,
+                            background: "#fff",
+                            borderRadius: "16px",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                            padding: isMobile ? "20px" : "24px",
+                        }}>
                             <h3 style={{
                                 marginBottom: "16px",
                                 color: "#7393B3",
-                                fontSize: "18px",
+                                fontSize: isMobile ? "16px" : "18px",
                                 fontWeight: 600
                             }}>
                                 Contact Details
                             </h3>
 
                             <div style={{ marginBottom: "16px" }}>
-                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>PHONE</div>
+                                <div style={{ fontSize: isMobile ? "11px" : "12px", color: "#94a3b8" }}>PHONE</div>
                                 <a href="tel:+917358501234" style={{
                                     color: "#1e293b",
                                     textDecoration: "none",
                                     fontWeight: 500,
                                     borderBottom: "none",
+                                    fontSize: isMobile ? "14px" : "16px",
                                 }}>
                                     +91-7358501234
                                 </a>
                             </div>
 
                             <div style={{ marginBottom: "16px" }}>
-                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>EMAIL</div>
+                                <div style={{ fontSize: isMobile ? "11px" : "12px", color: "#94a3b8" }}>EMAIL</div>
                                 <a href="mailto:enquiry@tskexportsandimports.com" style={{
                                     color: "#1e293b",
                                     textDecoration: "none",
                                     fontWeight: 500,
                                     borderBottom: "none",
+                                    fontSize: isMobile ? "14px" : "16px",
+                                    wordBreak: "break-word",
                                 }}>
                                     enquiry@tskexportsandimports.com
                                 </a>
                             </div>
 
                             <div>
-                                <div style={{ fontSize: "12px", color: "#94a3b8" }}>WHATSAPP</div>
+                                <div style={{ fontSize: isMobile ? "11px" : "12px", color: "#94a3b8" }}>WHATSAPP</div>
                                 <a
                                     href="https://wa.me/917358501234"
                                     target="_blank"
@@ -525,6 +529,7 @@ export default function ContactUs() {
                                         textDecoration: "none",
                                         fontWeight: 500,
                                         borderBottom: "none",
+                                        fontSize: isMobile ? "14px" : "16px",
                                     }}
                                 >
                                     Chat with us

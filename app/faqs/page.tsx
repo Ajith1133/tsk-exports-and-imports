@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useGetBreakpoints } from "../hooks/useGetBreakpoints";
 
 const faqs = [
     {
@@ -43,14 +44,23 @@ const faqs = [
 export default function FAQs() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-
+    const { isMobile } = useGetBreakpoints();
     const toggle = (index: number) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
 
     return (
-        <main className="container">
-            <h1 style={{ color: "#1E2D3B" }}>Frequently Asked Questions</h1>
+        <main style={{
+            margin: "0 auto",
+            padding: "2rem 1rem",
+            fontFamily: "Segoe UI, Arial, sans-serif",
+            color: "#1f3c3b",
+            maxWidth: isMobile ? "100%" : "80%",
+            overflowX: "hidden",
+        }}  >
+            <h1 style={{
+                color: "#1E2D3B", fontSize: "clamp(1.5rem, 6vw, 2rem)"
+            }}>Frequently Asked Questions</h1>
 
             <div style={{ marginTop: "2rem" }}>
                 {faqs.map((faq, idx) => (

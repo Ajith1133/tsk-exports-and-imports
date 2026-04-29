@@ -35,7 +35,7 @@ export default function RootLayout({
         <nav
           style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "right",
             justifyContent: "right",
             padding: "1.5rem 2rem",
             height: "1rem",
@@ -46,9 +46,10 @@ export default function RootLayout({
           }}
         >
           <NavLinks />
-
         </nav>
-        {children}
+        <body suppressHydrationWarning>
+          {children}
+        </body>
         <footer
           style={{
             backgroundColor: "#F4CB4D",
@@ -94,14 +95,14 @@ export default function RootLayout({
 
                 <a
                   href="tel:+917358501234"
-                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block",borderBottom: "none" }}
                 >
                   +91-7358501234
                 </a>
 
                 <a
                   href="mailto:enquiry@tskexportsandimports.com"
-                  style={{ color: "#171309", textDecoration: "none", display: "block" }}
+                  style={{ color: "#171309", textDecoration: "none", display: "block",borderBottom: "none", }}
                 >
                   enquiry@tskexportsandimports.com
                 </a>
